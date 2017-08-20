@@ -42,12 +42,12 @@ $ npm start
 ### Get user detail [GET] (/api/user/myaccount/)
 + Request
     + Headers
-      Authorization : <User token>
+      Authorization : USER TOKEN
 
-### Update user detail [PUT] (/api/user/update/<userid>)
+### Update user detail [PUT] (/api/user/update/USER ID)
 + Request
     + Headers
-      Authorization : <User token>
+      Authorization : USER TOKEN
     + Body
     {
         "firstName":"John12",
@@ -55,7 +55,7 @@ $ npm start
         "email":"john12@example.com"
     }    
 
-### Delete user account [DELETE] (/api/user/delete/<userid>)
+### Delete user account [DELETE] (/api/user/delete/USER ID)
 + Request
     + Headers
-      Authorization : <User token>
+      Authorization : USER TOKEN
