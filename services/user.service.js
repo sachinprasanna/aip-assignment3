@@ -1,11 +1,13 @@
-﻿var config = require('../config/config.json');
+﻿//File used to interact with DB (Mongo DB)
+
+var config = require('../config/config.json');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcryptjs'); //encrypt password
 var Q = require('q');
 var mongo = require('mongoskin');
-var db = mongo.db(config.connectionString, { native_parser: true });
-db.bind('users');
+var db = mongo.db(config.connectionString, { native_parser: true }); // use mongo db
+db.bind('users'); //users table
 
 var service = {};
 
@@ -85,7 +87,8 @@ function create(userParam) {
 
         // add hashed password to user object
         user.hash = bcrypt.hashSync(userParam.password, 10);
-
+        
+        //insert in table
         db.users.insert(
             user,
             function (err, doc) {
@@ -102,10 +105,11 @@ function create(userParam) {
 function update(_id, userParam) {
     var deferred = Q.defer();
 
-    // validation
+    // check if user id is relevant
     db.users.findById(_id, function (err, user) {
         if (err) deferred.reject(err.name + ': ' + err.message);
 
+        //check if email is changed
         if (user.email !== userParam.email) {
             // email has changed so check if the new email is already taken
             db.users.findOne(
@@ -125,6 +129,7 @@ function update(_id, userParam) {
         }
     });
 
+    //update user details
     function updateUser() {
         // fields to update
         var set = {
@@ -138,6 +143,7 @@ function update(_id, userParam) {
             set.hash = bcrypt.hashSync(userParam.password, 10);
         }
 
+        //update in table
         db.users.update(
             { _id: mongo.helper.toObjectID(_id) },
             { $set: set },
@@ -155,6 +161,7 @@ function update(_id, userParam) {
 function _delete(_id) {
     var deferred = Q.defer();
 
+    //delete record from table
     db.users.remove(
         { _id: mongo.helper.toObjectID(_id) },
         function (err) {
