@@ -1,25 +1,31 @@
-# aip-assignment3
+# aip-assignment3 - Cheap Aussie
+
+# About
+
+This repo contains the backend code for the app *Cheap Aussie*, made for UTS Advanced Internet Programming, Assignment 3. Built with Node.js, Express and sweat.
 
 # Installation
 
-Run the following command:
+Run the following command to run the backend code:
 
 ```
 # install modules
-$ npm install
-
+$ npm install 
+# or if you want to use yarn
+$ yarn install
 ```
 
 -------------
 # Start the App
 
 ```
-# In browser
+# In terminal
 $ npm start
 ```
 
 #API Docs
-**NOTE:** API Url: http://localhost:5000/
+
+**NOTE:** API Url: http://localhost:5000/ or whatever port you specified in your env
 
 ### Register User [POST] (/api/user/register/)
 + Request
@@ -59,3 +65,8 @@ $ npm start
 + Request
     + Headers
       Authorization : USER TOKEN
+
+
+# TODO
+- Add Items API
+- Add OAuth2
