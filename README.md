@@ -96,13 +96,14 @@ $ mongod
 + Param
     + Key : itemId
     + Value : enter item's id here supposed to be deleted.
+
 + Body (application/json)
     {
         "name":"Item 1.1",
         "price":"$1.1",
         "description":"this is where description goes",
         "image":"image url",
-        "url" : "url"
+        "url" : "url here"
     }
 
 # TODO
