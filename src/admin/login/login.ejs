@@ -1,0 +1,24 @@
+﻿<%- include('/common/header') %>
+<div class="login form-container">
+    <h2>LOGIN</h2>
+    <% if(locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <% if(locals.success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <form method="post">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="<%= locals.email || '' %>" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Passowrd</label>
+            <input type="password" name="password" id="password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>
+<%- include('/common/footer') %>

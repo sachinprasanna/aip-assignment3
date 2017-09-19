@@ -1,6 +1,4 @@
 ﻿/*
-User controller - By Alan Ng, Chhavi Negi
-
 User controller for
     - Account details
     - Authenticating user
