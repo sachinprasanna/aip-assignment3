@@ -7,11 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "app-module-path": "^2.2.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-module-resolver": "^2.7.1",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-preset-node7": "^1.5.0",
     "bcryptjs": "^2.1.0",
     "body-parser": "^1.13.2",
     "ejs": "^2.3.3",
@@ -24,28 +19,11 @@
     "mongoskin": "^2.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.0",
-    "pug": "~2.0.0-beta11",
     "q": "^1.4.1",
     "request": "^2.58.0",
     "rootpath": "^0.1.2"
   },
-    "babel": {
-    "presets": [
-      "node7"
-    ],
-    "plugins": [
-      "transform-flow-strip-types",
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./src"
-          ],
-          "extensions": [
-            ".js"
-          ]
-        }
-      ]
-    ]
+  "devDependencies": {
+    "nodemon": "^1.12.1"
   }
 }

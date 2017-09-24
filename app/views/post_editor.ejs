@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<%- include('partials/menu') %>
+<div class="create form-container">
+    <h1><%= lang.create_new_post %></h1>
+    <% if(locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <% if(locals.success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+            
+    <form method="post">
+        <div class="form-group">
+            <label for="title"><%= lang.title %>*</label>
+            <input type="text" id="title" class="form-control" name="title" value="<%= locals.title || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="content"><%= lang.post_content %>*</label>
+            <textarea id="content" class="form-control" name="content" required rows="18"><%= locals.content || '' %></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary"><%= lang.create %></button>
+        </div>
+    </form>
+</div>
+<%- include('partials/footer') %>

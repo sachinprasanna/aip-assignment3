@@ -1,6 +1,6 @@
-﻿<%- include('/common/header') %>
+﻿<%- include('partials/header') %>
 <div class="login form-container">
-    <h2>LOGIN</h2>
+    <h2><%= lang.login %></h2>
     <% if(locals.error) { %>
         <div class="alert alert-danger"><%= error %></div>
     <% } %>
@@ -9,16 +9,17 @@
     <% } %>
     <form method="post">
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email"><%= lang.email %></label>
             <input type="email" name="email" id="email" value="<%= locals.email || '' %>" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="password">Passowrd</label>
+            <label for="password"><%= lang.password %></label>
             <input type="password" name="password" id="password" class="form-control" />
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary"><%= lang.login %></button>
+            <%= lang.no_account_text %> <a href="<%= uri.app.register %>"><%= lang.register %></a>
         </div>
     </form>
 </div>
-<%- include('/common/footer') %>
+<%- include('partials/footer') %>

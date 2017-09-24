@@ -1,0 +1,16 @@
+{
+  "api": {
+    "login": "/user/authenticate",
+    "register": "/user/register",
+    "user_account": "/user/myaccount/",
+    "post_create": "/post/create"
+  },
+  "app":{
+    "login": "/login",
+    "register": "/register",
+    "my_account": "/myaccount",
+    "post": "/post",
+    "my_posts": "/myposts",
+    "edit_post": "/edit/post"
+  }
+}

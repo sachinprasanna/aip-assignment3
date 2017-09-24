@@ -1,0 +1,33 @@
+﻿<%- include('partials/header') %>
+<div class="register form-container">
+    <h2><%= lang.register %></h2>
+    <% if(locals.error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <% if(locals.success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <form method="post">
+        <div class="form-group">
+            <label for="firstName"><%= lang.first_name %></label>
+            <input type="text" name="firstName" id="firstName" class="form-control" value="<%= locals.firstName || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="lastName"><%= lang.last_name %></label>
+            <input type="text" name="lastName" id="lastName" class="form-control" value="<%= locals.lastName || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="email"><%= lang.email %></label>
+            <input type="text" name="email" id="email" class="form-control" value="<%= locals.email || '' %>" required />
+        </div>
+        <div class="form-group">
+            <label for="password"><%= lang.password %></label>
+            <input type="password" name="password" id="password" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary"><%= lang.register %></button>
+            <%= lang.have_account_text %> <a href="<%= uri.app.login %>"><%= lang.login %></a>
+        </div>
+    </form>
+</div>
+<%- include('partials/footer') %>
