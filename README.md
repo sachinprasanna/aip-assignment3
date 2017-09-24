@@ -1,18 +1,18 @@
-# aip-assignment3 - Cheap Aussie
+# aip-assignment3 - MyDiary
 
 # About
 
-This repo contains the backend code for the app *Cheap Aussie*, made for UTS Advanced Internet Programming, Assignment 3. Built with Node.js, Express and sweat.
+MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
+This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. THis project is built in Node.js, Express and EJS template engine.
 
 # Installation
 
-Run the following command to run the backend code:
+Run the following command to run the code:
 
 ```
 # install modules
 $ npm install 
-# or if you want to use yarn
-$ yarn install
+
 ```
 
 -------------
@@ -25,7 +25,7 @@ $ npm start
 
 #API Docs
 
-**NOTE:** API Url: http://localhost:5000/ or whatever port you specified in your env
+**NOTE:** API Url: http://localhost:3000/
 
 ### Register User [POST] (/api/user/register/)
 + Request
@@ -65,8 +65,3 @@ $ npm start
 + Request
     + Headers
       Authorization : USER TOKEN
-
-
-# TODO
-- Add Items API
-- Add OAuth2
