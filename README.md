@@ -3,7 +3,7 @@
 # About
 
 MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
-This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. THis project is built in Node.js, Express and EJS template engine.
+This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. This project is built in Node.js, Express and EJS template engine.
 
 # Installation
 

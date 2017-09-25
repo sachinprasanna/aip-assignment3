@@ -18,9 +18,10 @@ app.use(session({ secret: config.secret, resave: false, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-// use JWT auth to secure the api
+
 // api routes
 app.use('/api/user', require('./api/controllers/user'));
+// use Passport auth to secure the api. Only Logged users have access to posts
 app.use('/api/post', passport.authenticate('jwt', { session: false }), require('./api/controllers/post'));
 
 //app.use('/api', expressJwt({ secret: config.secret }).unless({ path: ['/api/users/authenticate', '/api/users/register'] }));

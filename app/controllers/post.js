@@ -1,15 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var request = require('request');
-var jwt = require('jsonwebtoken');
-var config = require('config/config.json');
-var lang = require('lang/en/text.json');
-var uri = require('config/uri');
+const express = require('express');
+const router = express.Router();
+const request = require('request');
+const jwt = require('jsonwebtoken');
+const nl2br  = require('nl2br');
+const config = require('config/config.json');
+const lang = require('lang/en/text.json');
+const uri = require('config/uri');
 
 var _viewData = { lang: lang, uri: uri };
   
 router.get('/', function (req, res) {
-  var searchParam = '';
+  let searchParam = '';
   if(req.query.q){
     searchParam = '?q=' + req.query.q;
   }
@@ -23,20 +24,24 @@ router.get('/', function (req, res) {
     }
 
     _viewData.posts = body.response;
+    _viewData.posts.content = nl2br(body.response.content);
     _viewData.q = req.query.q;
      return res.render('post_list', _viewData);
   });
 });
 
 router.get('/create', function (req, res) {
-  
+  _viewData.post = {
+    "title": "",
+    "content": ""
+  }
   return res.render('post_editor', _viewData);
 });
 
 router.post('/create', function (req, res) {
-  var userId = req.session.user.id;
-  var postParam = req.body;
-  var data = _viewData;
+  let userId = req.session.user.id;
+  let postParam = req.body;
+  let data = _viewData;
 
   delete data.error
   delete data.success
@@ -55,6 +60,48 @@ router.post('/create', function (req, res) {
 
     _viewData.success = body.response;
     return res.render('post_editor', data);
+  });
+});
+
+router.get('/edit/:id', function (req, res) {
+  let postId = req.params.id;
+  
+  request.get({
+    url: config.apiUrl + '/post/edit/' + postId,
+    headers: {'Authorization': req.session.token},
+    json: true
+  }, function (error, response, body) {
+    if (body.status == 0) {
+      return res.redirect('/');
+    }
+
+    _viewData.post = body.response;
+    return res.render('post_editor', _viewData);
+  });
+});
+
+router.post('/edit/:id', function (req, res) {
+  let postId = req.params.id;
+  let userId = req.session.user.id;
+  let postParam = req.body;
+
+  delete _viewData.error
+  delete _viewData.success
+
+  _viewData.post = postParam;
+  request.post({
+    url: config.apiUrl + '/post/edit/' + postId,
+    form: postParam, 
+    headers: {'Authorization': req.session.token},
+    json: true
+  }, function (error, response, body) {
+    if (body.status == 0) {
+      _viewData.error = body.response;
+      return res.render('post_editor', data);
+    }
+
+    _viewData.success = body.response;
+    return res.render('post_editor', _viewData);
   });
 });
 
