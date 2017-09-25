@@ -12,6 +12,8 @@ var passport = require("passport");
 
 /* routes for post api controller */
 router.post('/create/', createPost);
+router.get('/edit/:id', getUserPostById);
+router.post('/edit/:id', updateUserPostById);
 router.get('/myposts/', getUserPosts);
 router.get('/all/', getAllPosts);
 
@@ -57,6 +59,54 @@ function createPost(req, res) {
       .then(function() {
         // post added in DB
         res.send({ status: 1, response: "Post added successfully." });
+      })
+      .catch(function(err) {
+        res.send({ status: 0, response: err });
+      });
+  });
+}
+
+function getUserPostById(req, res) {
+  let postId = req.params.id;
+  let userId = req.user._id;
+  postService
+    .getUserPost(postId, userId)
+    .then(function(posts) {
+      posts.toArray(function(err, postList) {
+        res.send({ status: 1, response: postList[0] });
+      });
+    })
+    .catch(function(err) {
+      // return error
+      res.send({ status: 0, response: err });
+    });
+}
+
+function updateUserPostById(req, res) {
+  let postId = req.params.id;
+  let userId = req.user._id;
+
+  // validate the input
+  req.checkBody("title", "Title is required").notEmpty();
+  req.checkBody("content", "Post Content is required").notEmpty();
+
+  // check the validation object for errors
+  req.getValidationResult().then(function(errors) {
+    //throw error, if any
+    if (!errors.isEmpty()) {
+      //util.inspect(errors.array())
+      res.send({ status: 0, response: errors.array() });
+      return;
+    }
+
+    var postParam = req.body;
+    
+    //save post in DB
+    postService
+      .update(postId, userId, postParam)
+      .then(function() {
+        // post added in DB
+        res.send({ status: 1, response: "Post updated successfully." });
       })
       .catch(function(err) {
         res.send({ status: 0, response: err });
