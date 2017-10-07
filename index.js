@@ -44,6 +44,6 @@ app.use('/', require('./router'));
 //});
 
 // start server
-var server = app.listen(config.port, function () {
+var server = app.listen(process.env.PORT || config.port, function () {
   console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });
