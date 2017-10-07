@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs'); //encrypt password
 var Q = require('q');
 var mongo = require('mongoskin');
-var db = mongo.db(config.connectionString, { native_parser: true }); // use mongo db
+var db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('posts'); //posts table
 
 // set index on fields to make them searchable 
