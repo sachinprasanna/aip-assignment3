@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var passport = require('passport');
 require('config/passport')(passport); // pass passport for configuration
+var port = process.env.PORT || 8000
 
 var app = express();
 app.set('view engine', 'ejs');
@@ -44,6 +45,6 @@ app.use('/', require('./router'));
 //});
 
 // start server
-var server = app.listen(process.env.PORT || config.port, function () {
+var server = app.listen(port, function () {
   console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
 });
