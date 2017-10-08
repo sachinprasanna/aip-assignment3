@@ -12,6 +12,7 @@ var service = {};
 
 service.authenticate = authenticate;
 service.getById = getById;
+service.getByEmail = getByEmail;
 service.create = create;
 service.update = update;
 service.delete = _delete;
@@ -67,6 +68,26 @@ function getById(_id) {
       deferred.resolve();
     }
   });
+
+  return deferred.promise;
+}
+
+function getByEmail(email){
+  var deferred = Q.defer(); //save promise
+
+  // validate user
+  db.users.findOne(
+    { email: userParam.email },
+    function (err, user) {
+      if (err) deferred.reject(err.name + ': ' + err.message);
+
+      if (user) {
+        // email already exists
+        deferred.reject('Email "' + userParam.email + '" is already taken');
+      } else {
+        deferred.resolve();
+      }
+    });
 
   return deferred.promise;
 }
