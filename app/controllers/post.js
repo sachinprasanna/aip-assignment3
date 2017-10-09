@@ -66,6 +66,9 @@ router.post('/create', function (req, res) {
 router.get('/edit/:id', function (req, res) {
   let postId = req.params.id;
   
+  delete _viewData.error
+  delete _viewData.success
+  
   request.get({
     url: config.apiUrl + '/post/edit/' + postId,
     headers: {'Authorization': req.session.token},
@@ -97,7 +100,7 @@ router.post('/edit/:id', function (req, res) {
   }, function (error, response, body) {
     if (body.status == 0) {
       _viewData.error = body.response;
-      return res.render('post_editor', data);
+      return res.render('post_editor', _viewData);
     }
 
     _viewData.success = body.response;

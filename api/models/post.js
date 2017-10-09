@@ -36,9 +36,10 @@ function create(postParam) {
     title: postParam.title,
     content: postParam.content,
     userId: postParam.userId,
+    version: 1,
     createdAt: new Date()
   };
-   
+   console.log(collectionData);
   //insert in table
   db.posts.insert(
     collectionData,
@@ -100,22 +101,31 @@ function update(_id, userId, postParam) {
   db.posts.find({'_id': mongo.helper.toObjectID(_id), 'userId': mongo.helper.toObjectID(userId)},
     function (err, post) {
       if (err) deferred.reject(err.name + ': ' + err.message);
-      
-      // fields to update
-      var set = {
-        title: postParam.title,
-        content: postParam.content
-      };
-      
-      //update in table
-      db.posts.update(
-        { _id: mongo.helper.toObjectID(_id) },
-        { $set: set },
-        function (err, doc) {
-          if (err) deferred.reject(err.name + ': ' + err.message);
-  
-          deferred.resolve();
-        });
+
+      post.toArray(function(err, postList) {
+        console.log(postList[0]);
+        
+        console.log(postList[0].version + ', ' + postParam.version);
+        //check version of post
+        if(postList[0].version != postParam.version) { deferred.reject('error: Wrong version!' ); return  deferred.promise; }
+        
+        // fields to update
+        var set = {
+          title: postParam.title,
+          content: postParam.content,
+          version: ++postList[0].version
+        };
+        
+        //update in table
+        db.posts.update(
+          { _id: mongo.helper.toObjectID(_id) },
+          { $set: set },
+          function (err, doc) {
+            if (err) deferred.reject(err.name + ': ' + err.message);
+    
+            deferred.resolve();
+          });
+      });
     });
 
 
