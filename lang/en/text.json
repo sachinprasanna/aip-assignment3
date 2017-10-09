@@ -6,6 +6,8 @@
     "password": "Password",
     "login": "Login",
     "register": "Register",
+    "frgtpwd": "Forgot Password",
+    "reset_text": "Reset Password",
     "no_account_text": "Don't have an account?",
     "have_account_text": "Already have an account?",
     "first_name": "First Name",
@@ -18,5 +20,6 @@
     "title": "Title",
     "post_content": "Post Content",
     "save": "Save",
-    "create": "Create"
+    "create": "Create",
+    "click_here": "Click here to"
 }

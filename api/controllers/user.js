@@ -17,6 +17,7 @@ var passport = require("passport");
 /* routes for user api controller */
 router.post("/authenticate", authenticateUser);
 router.post("/register", registerUser);
+router.post("/resetpwd", resetPassword);
 router.get('/myaccount/', passport.authenticate('jwt', { session: false }), getUser);
 router.put('/myaccount/:_id', passport.authenticate('jwt', { session: false }), updateCurrentUser);
 router.delete('/myaccount/:_id', passport.authenticate('jwt', { session: false }), deleteCurrentUser);
@@ -112,6 +113,46 @@ function registerUser(req, res) {
       .catch(function(err) {
         res.send({ status: 0, response: err });
       });
+  });
+}
+
+function resetPassword(req, res){
+  // validate the input
+  req.checkBody("email", "Email is required").notEmpty();
+  req.checkBody("email", "Email does not appear to be valid").isEmail();
+  
+  // check the validation object for errors
+  req.getValidationResult().then(function(errors) {
+    //throw error, if any
+    if (!errors.isEmpty()) {
+      var errorArray = errors.array();
+      var msg = '';
+      for (i = 0; i < errorArray.length; i++) { 
+          msg += errorArray[i].msg + ".";
+      }
+      res.send({ status: 0, response: msg });
+    } else { 
+
+      //check for valid user in DB
+      userService
+        .getByEmail(req.body.email)
+        .then(function(user) {
+          if (user) {
+            // authentication successful, return token
+            res.send({ status: 1, response: "Password has been reset and sent to your email." });
+          } else {
+            // authentication failed
+            res.send({ status: 0, response: "Account does not exist" });
+          }
+        })
+        // catch error if anything other than authentication error
+        .catch(function(err) {
+          res.send({ status: 0, response: err });
+        });
+    }
+  })
+  .catch(function(err) {
+    res.send({ status: 0, response: 'An unexpected error occurred!' });
   });
 }
 

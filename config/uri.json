@@ -2,12 +2,14 @@
   "api": {
     "login": "/user/authenticate",
     "register": "/user/register",
+    "resetpwd": "/user/resetpwd",
     "user_account": "/user/myaccount/",
     "post_create": "/post/create"
   },
   "app":{
     "login": "/login",
     "register": "/register",
+    "forgotpwd": "/forgotpwd",
     "my_account": "/myaccount",
     "post": "/post",
     "my_posts": "/myposts",

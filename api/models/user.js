@@ -77,15 +77,15 @@ function getByEmail(email){
 
   // validate user
   db.users.findOne(
-    { email: userParam.email },
+    { email: email },
     function (err, user) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 
       if (user) {
-        // email already exists
-        deferred.reject('Email "' + userParam.email + '" is already taken');
+        deferred.resolve(user);
       } else {
-        deferred.resolve();
+        // email does not exists
+        deferred.reject('Account does not exist');
       }
     });
 
