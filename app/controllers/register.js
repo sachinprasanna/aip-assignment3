@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const request = require('request');
-const config = require('config/config');
-const uri = require('config/uri');
-const i18n = require("i18n");
+const config  = require('config/config');
+const uri     = require('config/uri');
+const i18n    = require("i18n");
 
 let _viewData = { uri: uri };
 
@@ -21,16 +21,16 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   // authenticate using api to maintain clean separation between layers
   request.post({
-    url: config.apiUrl + uri.api.register,
+    url : config.apiUrl + uri.api.register,
     form: req.body,
     json: true
   }, function (error, response, body) {
 
     if (body.status == 0) {
-      _viewData.error = body.response;
-      _viewData.lastName = req.body.lastName;
+      _viewData.error     = body.response;
+      _viewData.lastName  = req.body.lastName;
       _viewData.firstName = req.body.firstName;
-      _viewData.email = req.body.email;
+      _viewData.email     = req.body.email;
       return res.render('register', _viewData);
     }
 

@@ -5,18 +5,18 @@ Post controller for
 */
 
 /* imports for express router, database for users and passport */
-const express = require("express");
-const router = express.Router();
+const express     = require("express");
+const router      = express.Router();
 const postService = require("api/models/post");
-const uri = require('config/uri');
-const i18n = require("i18n");
+const uri         = require('config/uri');
+const i18n        = require("i18n");
 
 /* routes for post api controller */
-router.post(uri.api.route.post_create, createPost);
-router.get(uri.api.route.post_detail + '/:id', getUserPostById);
-router.post(uri.api.route.post_edit + '/:id', updateUserPostById);
-router.get(uri.api.route.post_user + '/:id', getUserPosts);
-router.get(uri.api.route.all_posts, getAllPosts);
+router.post(uri.api.route.post_create,          createPost);
+router.get(uri.api.route.post_detail + '/:id',  getUserPostById);
+router.post(uri.api.route.post_edit + '/:id',   updateUserPostById);
+router.get(uri.api.route.post_user + '/:id',    getUserPosts);
+router.get(uri.api.route.all_posts,             getAllPosts);
 
 // Export default for router
 module.exports = router;
@@ -36,25 +36,25 @@ function createPost(req, res) {
   let userId = req.user._id;
 
   // validate the input
-  req.checkBody("title", i18n.__('title_required')).notEmpty();
-  req.checkBody("content", i18n.__('content_required')).notEmpty();
+  req.checkBody("title",    i18n.__('title_required')).notEmpty();
+  req.checkBody("content",  i18n.__('content_required')).notEmpty();
 
   // check the validation object for errors
   req.getValidationResult().then(function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
-      let errorArray = errors.array();
-      let msg = '';
+      let errorArray  = errors.array();
+      let msg         = '';
       for (i = 0; i < errorArray.length; i++) { 
-          msg += errorArray[i].msg + ".";
+          msg         += errorArray[i].msg + ".";
       }
       res.send({ status: 0, response: msg });
       //util.inspect(errors.array())
       return;
     }
 
-    let postParam = req.body;
-    postParam.userId = userId;
+    let postParam     = req.body;
+    postParam.userId  = userId;
   
     //save post in DB
     postService
@@ -90,24 +90,24 @@ function updateUserPostById(req, res) {
   let userId = req.user._id;
 
   // validate the input
-  req.checkBody("title", i18n.__('title_required')).notEmpty();
-  req.checkBody("content", i18n.__('content_required')).notEmpty();
+  req.checkBody("title",    i18n.__('title_required')).notEmpty();
+  req.checkBody("content",  i18n.__('content_required')).notEmpty();
 
   // check the validation object for errors
   req.getValidationResult().then(function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
       //util.inspect(errors.array())
-      let errorArray = errors.array();
-      let msg = '';
+      let errorArray  = errors.array();
+      let msg         = '';
       for (i = 0; i < errorArray.length; i++) { 
-          msg += errorArray[i].msg + ".";
+          msg         += errorArray[i].msg + ".";
       }
       res.send({ status: 0, response: msg });
       return;
     }
 
-    let postParam = req.body;
+    let postParam     = req.body;
     
     //save post in DB
     postService

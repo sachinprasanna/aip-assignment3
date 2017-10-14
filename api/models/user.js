@@ -1,24 +1,24 @@
 ﻿//File used to interact with DB (Mongo DB)
-const config = require('config/config');
-const _ = require('lodash');
-const i18n = require("i18n");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs'); //encrypt password
-const Q = require('q');
-const mongo = require('mongoskin');
-const db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const config  = require('config/config');
+const _       = require('lodash');
+const i18n    = require("i18n");
+const jwt     = require('jsonwebtoken');
+const bcrypt  = require('bcryptjs'); //encrypt password
+const Q       = require('q');
+const mongo   = require('mongoskin');
+const db      = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('users'); //users table
 
 const service = {};
 
-service.authenticate = authenticate;
-service.getById = getById;
-service.getByEmail = getByEmail;
-service.create = create;
-service.update = update;
-service.delete = _delete;
+service.authenticate  = authenticate;
+service.getById       = getById;
+service.getByEmail    = getByEmail;
+service.create        = create;
+service.update        = update;
+service.delete        = _delete;
 
-module.exports = service;
+module.exports        = service;
 
 //authenticate user
 function authenticate(email, password) {
@@ -32,15 +32,19 @@ function authenticate(email, password) {
     if (user && bcrypt.compareSync(password, user.hash)) {
       // authentication successful, return token
       let profile = {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
+        id        : user._id,
+        firstName : user.firstName,
+        lastName  : user.lastName,
+        email     : user.email
       };
 
-      deferred.resolve({ "token": "Bearer " + jwt.sign({id: user._id}, config.session_secret, {
-          expiresIn: 10080 // in seconds
-        }),"user": profile });
+      deferred.resolve({ 
+                      "token": "Bearer " + jwt.sign(
+                                            {id: user._id}, 
+                                            config.session_secret, {
+                                            expiresIn: 10080 // in seconds
+                                          }),
+                      "user": profile });
     } else {
       // authentication failed
       deferred.resolve();
@@ -106,10 +110,10 @@ function create(userParam) {
       } else {
         //reset userParam variable to contain required values
         userParam = {
-          firstName: userParam.firstName,
-          lastName: userParam.lastName,
-          email: userParam.email,
-          password: userParam.password
+          firstName : userParam.firstName,
+          lastName  : userParam.lastName,
+          email     : userParam.email,
+          password  : userParam.password
         }
         createUser();
       }
@@ -168,9 +172,9 @@ function update(_id, userParam) {
   function updateUser() {
     // fields to update
     let set = {
-      firstName: userParam.firstName,
-      lastName: userParam.lastName,
-      email: userParam.email,
+      firstName : userParam.firstName,
+      lastName  : userParam.lastName,
+      email     : userParam.email,
     };
 
     // update password if it was entered

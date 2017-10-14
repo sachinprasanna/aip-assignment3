@@ -1,8 +1,8 @@
-const express = require('express');
-const passport = require('passport');
-const router = express.Router();
-const config = require('config/config');
-const uri = require('config/uri');
+const express   = require('express');
+const passport  = require('passport');
+const router    = express.Router();
+const config    = require('config/config');
+const uri       = require('config/uri');
 require('config/passport')(passport); // pass passport for configuration
 
 //not all user requests require passport authentication, therefore validation applied in controller instead

@@ -1,30 +1,30 @@
 ﻿//File used to interact with DB (Mongo DB)
-const config = require('config/config');
-const _ = require('lodash');
-const i18n = require("i18n");
-const Q = require('q');
-const mongo = require('mongoskin');
-const db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const config  = require('config/config');
+const _       = require('lodash');
+const i18n    = require("i18n");
+const Q       = require('q');
+const mongo   = require('mongoskin');
+const db      = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('posts'); //posts table
 
 // set index on fields to make them searchable 
 db.posts.createIndex(
   {
-    title: "text",
-    content: "text"
+    title   : "text",
+    content : "text"
   }
 )
-const service = {};
+const service         = {};
 
-service.create = create;
-service.getById = getById;
-service.getUserPost = getUserPost;
-service.update = update;
-service.delete = _delete;
-service.getUserPosts = getUserPosts;
-service.getAllPosts = getAllPosts;
+service.create        = create;
+service.getById       = getById;
+service.getUserPost   = getUserPost;
+service.update        = update;
+service.delete        = _delete;
+service.getUserPosts  = getUserPosts;
+service.getAllPosts   = getAllPosts;
 
-module.exports = service;
+module.exports        = service;
 
 //create new post
 function create(post) {
@@ -32,10 +32,10 @@ function create(post) {
   
   // fields to add
   let collectionData = {
-    title: post.title,
-    content: post.content,
-    userId: post.userId,
-    version: 1,
+    title   : post.title,
+    content : post.content,
+    userId  : post.userId,
+    version : 1,
     createdAt: new Date()
   };
 
@@ -108,9 +108,9 @@ function update(_id, userId, postParam) {
         
         // fields to update
         let set = {
-          title: postParam.title,
-          content: postParam.content,
-          version: ++postList[0].version
+          title   : postParam.title,
+          content : postParam.content,
+          version : ++postList[0].version
         };
         
         //update in table
@@ -163,25 +163,24 @@ function getAllPosts(searchParam){
   
   //set query for search
   queryOption.push({
-        "$lookup":
-        {
-          "from": "users",
-          "localField": "userId",
+        "$lookup": {
+          "from"        : "users",
+          "localField"  : "userId",
           "foreignField": "_id",
-          "as": "userinfo"
+          "as"          : "userinfo"
         }
       },
       {
-        $unwind: "$userinfo"
+        $unwind         : "$userinfo"
       },
       {   
-        $project:{
-          _id: 1,
-          title: 1,
-          content: 1,
-          createdAt: 1,
-          userFirstName: "$userinfo.firstName",
-          userLastName: "$userinfo.lastName",
+        $project: {
+          _id           : 1,
+          title         : 1,
+          content       : 1,
+          createdAt     : 1,
+          userFirstName : "$userinfo.firstName",
+          userLastName  : "$userinfo.lastName",
         } 
       },
       { $sort : { createdAt : -1 } });

@@ -1,8 +1,8 @@
 ﻿const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const request = require('request');
-const config = require('config/config');
-const uri = require('config/uri');
+const config  = require('config/config');
+const uri     = require('config/uri');
 
 let _viewData = { uri: uri };
 
@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
   // authenticate using api to maintain clean separation between layers
   
   request.post({
-    url: config.apiUrl + uri.api.login,
+    url : config.apiUrl + uri.api.login,
     form: req.body,
     json: true
   }, function (error, response, body) {
@@ -34,7 +34,7 @@ router.post('/', function (req, res) {
 
     // save JWT token in the session to make it available
     req.session.token = body.response.token;
-    req.session.user = body.response.user;
+    req.session.user  = body.response.user;
     
     // redirect to homepage
     res.redirect('/');
