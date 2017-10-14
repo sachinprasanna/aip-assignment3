@@ -1,40 +1,54 @@
 <%- include('partials/header') %>
-<%- include('partials/menu') %>
-<div class="account form-container">
-    <h1><%= __('my_account') %></h1>
-    <% if(locals.error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
-    <% if(locals.success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-            
-    <form method="post">
-        <div class="form-group">
-            <label for="firstName"><%= __('first_name') %>*</label>
-            <input type="text" id="firstName" class="form-control" name="firstName" value="<%= user.firstName %>" required />
-        </div>
-        <div class="form-group">
-            <label for="lastName"><%= __('last_name') %>*</label>
-            <input type="text" id="lastName" class="form-control" name="lastName" value="<%= user.lastName %>" required />
-        </div>
-        <div class="form-group">
-            <label for="email"><%= __('email') %>*</label>
-            <input type="email" id="email" class="form-control" name="email" value="<%= user.email %>" required />
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary"><%= __('save') %></button>
-        </div>
-        <div class="form-group">
-            <hr/>
-        </div>
-        <div class="form-group">
-            <label for="password"><%= __('password') %>*</label>
-            <input type="password" id="password" class="form-control" name="password" value="" />
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary"><%= __('change_password') %></button>
-        </div>
-    </form>
-</div>
-<%- include('partials/footer') %>
+	<%- include('partials/menu') %>
+		<div class="account form-container">
+			<h1>
+				<%= __('my_account') %>
+			</h1>
+			<% if(locals.error) { %>
+				<div class="alert alert-danger">
+					<%= error %>
+				</div>
+				<% } %>
+					<% if(locals.success) { %>
+						<div class="alert alert-success">
+							<%= success %>
+						</div>
+						<% } %>
+
+							<form method="post">
+								<div class="form-group">
+									<label for="firstName">
+										<%= __('first_name') %>*</label>
+									<input type="text" id="firstName" class="form-control" name="firstName" value="<%= user.firstName %>" required />
+								</div>
+								<div class="form-group">
+									<label for="lastName">
+										<%= __('last_name') %>*</label>
+									<input type="text" id="lastName" class="form-control" name="lastName" value="<%= user.lastName %>" required />
+								</div>
+								<div class="form-group">
+									<label for="email">
+										<%= __('email') %>*</label>
+									<input type="email" id="email" class="form-control" name="email" value="<%= user.email %>" required />
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary">
+										<%= __('save') %>
+									</button>
+								</div>
+								<div class="form-group">
+									<hr/>
+								</div>
+								<div class="form-group">
+									<label for="password">
+										<%= __('password') %>*</label>
+									<input type="password" id="password" class="form-control" name="password" value="" />
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary">
+										<%= __('change_password') %>
+									</button>
+								</div>
+							</form>
+		</div>
+		<%- include('partials/footer') %>

@@ -1,26 +1,44 @@
 ﻿<%- include('partials/header') %>
-<div class="login form-container">
-    <h2><%= __('login') %></h2>
-    <% if(locals.error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
-    <% if(locals.success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-    <form method="post">
-        <div class="form-group">
-            <label for="email"><%= __('email') %></label>
-            <input type="email" name="email" id="email" value="<%= locals.email || '' %>" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="password"><%= __('password') %></label>
-            <input type="password" name="password" id="password" class="form-control" />
-            <a href="<%= uri.app.link.forgotpwd %>"><i><%= __('frgtpwd') %>?</i></a>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary"><%= __('login') %></button>
-            <%= __('no_account_text') %> <a href="<%= uri.app.link.register %>"><%= __('register') %></a>
-        </div>
-    </form>
-</div>
-<%- include('partials/footer') %>
+	<div class="login form-container">
+		<h2>
+			<%= __('login') %>
+		</h2>
+		<% if(locals.error) { %>
+			<div class="alert alert-danger">
+				<%= error %>
+			</div>
+			<% } %>
+				<% if(locals.success) { %>
+					<div class="alert alert-success">
+						<%= success %>
+					</div>
+					<% } %>
+						<form method="post">
+							<div class="form-group">
+								<label for="email">
+									<%= __('email') %>
+								</label>
+								<input type="email" name="email" id="email" value="<%= locals.email || '' %>" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label for="password">
+									<%= __('password') %>
+								</label>
+								<input type="password" name="password" id="password" class="form-control" />
+								<a href="<%= uri.app.link.forgotpwd %>">
+									<i>
+										<%= __('frgtpwd') %>?</i>
+								</a>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">
+									<%= __('login') %>
+								</button>
+								<%= __('no_account_text') %>
+									<a href="<%= uri.app.link.register %>">
+										<%= __('register') %>
+									</a>
+							</div>
+						</form>
+	</div>
+	<%- include('partials/footer') %>

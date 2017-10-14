@@ -1,27 +1,37 @@
 <%- include('partials/header') %>
-<%- include('partials/menu') %>
-<div class="create form-container">
-    <h1><%= __('edit') %></h1>
-    <% if(locals.error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
-    <% if(locals.success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-            
-    <form method="post">
-        <input type="hidden" name="version" id="version" value="<%= post.version || 1 %>" />
-        <div class="form-group">
-            <label for="title"><%= __('title') %>*</label>
-            <input type="text" id="title" class="form-control" maxlength="50" name="title" value="<%= post.title || '' %>" required />
-        </div>
-        <div class="form-group">
-            <label for="content"><%= __('post_content') %>*</label>
-            <textarea id="content" class="form-control" name="content" required rows="18"><%= post.content || '' %></textarea>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary"><%= __('create') %></button>
-        </div>
-    </form>
-</div>
-<%- include('partials/footer') %>
+	<%- include('partials/menu') %>
+		<div class="create form-container">
+			<h1>
+				<%= __('edit') %>
+			</h1>
+			<% if(locals.error) { %>
+				<div class="alert alert-danger">
+					<%= error %>
+				</div>
+				<% } %>
+					<% if(locals.success) { %>
+						<div class="alert alert-success">
+							<%= success %>
+						</div>
+						<% } %>
+
+							<form method="post">
+								<input type="hidden" name="version" id="version" value="<%= post.version || 1 %>" />
+								<div class="form-group">
+									<label for="title">
+										<%= __('title') %>*</label>
+									<input type="text" id="title" class="form-control" maxlength="50" name="title" value="<%= post.title || '' %>" required />
+								</div>
+								<div class="form-group">
+									<label for="content">
+										<%= __('post_content') %>*</label>
+									<textarea id="content" class="form-control" name="content" required rows="18"><%= post.content || '' %></textarea>
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary">
+										<%= __('create') %>
+									</button>
+								</div>
+							</form>
+		</div>
+		<%- include('partials/footer') %>

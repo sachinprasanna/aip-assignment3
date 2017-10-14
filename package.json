@@ -27,6 +27,8 @@
     "sendmail": "^1.2.0"
   },
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "babel-eslint": "^8.0.1",
+    "nodemon": "^1.12.1",
+    "prettier-eslint": "^8.2.1"
   }
 }

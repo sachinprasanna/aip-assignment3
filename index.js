@@ -28,6 +28,9 @@ i18n.configure({
 });
 i18n.setLocale('en');
 
+/** add static files */
+app.use(express.static(__dirname, '/public'));
+
 // api routes
 app.use('/api', require('./api/router'));
 
