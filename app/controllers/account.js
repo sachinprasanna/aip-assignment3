@@ -3,10 +3,9 @@ var router = express.Router();
 var request = require('request');
 var jwt = require('jsonwebtoken');
 var config = require('config/config');
-var lang = require('lang/en/text.json');
 var uri = require('config/uri');
 
-var _viewData = { lang: lang, uri: uri };
+var _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
   var data = _viewData;
@@ -19,6 +18,9 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   var data = _viewData;
   var userId = req.session.user.id;
+  delete data.success
+  delete data.error
+  
   request.put({
     url: config.apiUrl + uri.api.user_account + userId,
     form: req.body,

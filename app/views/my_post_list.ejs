@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
 <%- include('partials/menu') %>
 <div class="postlist form-container">
-    <h1>My Posts</h1>
+    <h1><%= __('my_posts') %></h1>
     <% if(locals.error) { %>
         <div class="alert alert-danger"><%= error %></div>
     <% } %>
@@ -12,8 +12,8 @@
     <table class="table table-striped table-bordered table-hover">
       <thead>
         <tr>
-          <th width="70%">Title</th>
-          <th width="30%">Action</th>
+          <th width="70%"><%= __('title') %></th>
+          <th width="30%"><%= __('action') %></th>
         </tr>
       </thead>
       <tbody>
@@ -21,8 +21,8 @@
         <tr>
           <td><%= posts[i].title %></td>
           <td>
-            <a href="/post/edit/<%= posts[i]._id %>" class="btn btn-primary">Edit</a>
-            <a href="/post/delete/<%= posts[i]._id %>" class="btn btn-danger">Delete</a>
+            <a href="/post/edit/<%= posts[i]._id %>" class="btn btn-primary"><%= __('edit') %></a>
+            <!-- <a href="/post/delete/<%= posts[i]._id %>" class="btn btn-danger"><%= __('delete') %></a> -->
           </td>
         </tr>
         <% } %>

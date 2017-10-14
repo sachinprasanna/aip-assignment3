@@ -4,18 +4,19 @@ const request = require('request');
 const jwt = require('jsonwebtoken');
 const nl2br  = require('nl2br');
 const config = require('config/config');
-const lang = require('lang/en/text.json');
 const uri = require('config/uri');
 
-var _viewData = { lang: lang, uri: uri };
+var _viewData = { uri: uri };
   
 router.get('/', function (req, res) {
+  delete _viewData.success
+  delete _viewData.error
   let searchParam = '';
   if(req.query.q){
     searchParam = '?q=' + req.query.q;
   }
   request.get({
-    url: config.apiUrl + '/post/all/' + searchParam,
+    url: config.apiUrl + uri.api.link.all_posts + searchParam,
     headers: {'Authorization': req.session.token},
     json: true
   }, function (error, response, body) {
@@ -31,6 +32,8 @@ router.get('/', function (req, res) {
 });
 
 router.get('/create', function (req, res) {
+  delete _viewData.success
+  delete _viewData.error
   _viewData.post = {
     "title": "",
     "content": ""
@@ -42,12 +45,9 @@ router.post('/create', function (req, res) {
   let userId = req.session.user.id;
   let postParam = req.body;
   let data = _viewData;
-
-  delete data.error
-  delete data.success
   
   request.post({
-    url: config.apiUrl + uri.api.post_create,
+    url: config.apiUrl + uri.api.link.create_post,
     form: postParam,
     headers: {'Authorization': req.session.token},
     json: true
@@ -63,14 +63,13 @@ router.post('/create', function (req, res) {
   });
 });
 
-router.get('/edit/:id', function (req, res) {
-  let postId = req.params.id;
-  
+router.get('/edit/:id', function (req, res) { 
   delete _viewData.error
   delete _viewData.success
-  
+  let postId = req.params.id;
+
   request.get({
-    url: config.apiUrl + '/post/edit/' + postId,
+    url: config.apiUrl + uri.api.link.get_post + postId,
     headers: {'Authorization': req.session.token},
     json: true
   }, function (error, response, body) {
@@ -78,22 +77,23 @@ router.get('/edit/:id', function (req, res) {
       return res.redirect('/');
     }
 
+    //if not post exists
+    if(!body.response) return res.redirect('/');
+
     _viewData.post = body.response;
     return res.render('post_editor', _viewData);
   });
 });
 
 router.post('/edit/:id', function (req, res) {
+  delete _viewData.error
+  delete _viewData.success
   let postId = req.params.id;
   let userId = req.session.user.id;
   let postParam = req.body;
 
-  delete _viewData.error
-  delete _viewData.success
-
-  _viewData.post = postParam;
   request.post({
-    url: config.apiUrl + '/post/edit/' + postId,
+    url: config.apiUrl + uri.api.link.edit_post + postId,
     form: postParam, 
     headers: {'Authorization': req.session.token},
     json: true
@@ -102,16 +102,20 @@ router.post('/edit/:id', function (req, res) {
       _viewData.error = body.response;
       return res.render('post_editor', _viewData);
     }
-
+console.log(body);
     _viewData.success = body.response;
+    _viewData.post = body.result;
     return res.render('post_editor', _viewData);
   });
 });
 
 router.get('/myposts', function (req, res) {
-  
+  delete _viewData.error
+  delete _viewData.success
+  let userId = req.session.user.id;
+
   request.get({
-    url: config.apiUrl + '/post/myposts',
+    url: config.apiUrl + uri.api.link.user_post + userId,
     headers: {'Authorization': req.session.token},
     json: true
   }, function (error, response, body) {

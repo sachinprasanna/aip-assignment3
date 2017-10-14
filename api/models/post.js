@@ -119,7 +119,7 @@ function update(_id, userId, postParam) {
           function (err, doc) {
             if (err) deferred.reject(err.name + ': ' + err.message);
     
-            deferred.resolve();
+            deferred.resolve(getById(_id));
           });
       });
     });

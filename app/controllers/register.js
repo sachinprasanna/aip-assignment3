@@ -2,10 +2,9 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var config = require('config/config');
-var lang = require('lang/en/text.json');
 var uri = require('config/uri');
 
-var _viewData = { lang: lang, uri: uri };
+var _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
   // log user out
@@ -38,7 +37,7 @@ router.post('/', function (req, res) {
     req.session.token = body.response;
 
     // return success message
-    _viewData.success = lang.register_successfully;
+    _viewData.success = __('register_successfully');
     return res.render('register', _viewData);
   });
 });

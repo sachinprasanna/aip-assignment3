@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
 <%- include('partials/menu') %>
 <div class="account form-container">
-    <h1><%= lang.my_account %></h1>
+    <h1><%= __('my_account') %></h1>
     <% if(locals.error) { %>
         <div class="alert alert-danger"><%= error %></div>
     <% } %>
@@ -11,19 +11,19 @@
             
     <form method="post">
         <div class="form-group">
-            <label for="firstName">First name*</label>
+            <label for="firstName"><%= __('first_name') %>*</label>
             <input type="text" id="firstName" class="form-control" name="firstName" value="<%= user.firstName %>" required />
         </div>
         <div class="form-group">
-            <label for="lastName">Last name*</label>
+            <label for="lastName"><%= __('last_name') %>*</label>
             <input type="text" id="lastName" class="form-control" name="lastName" value="<%= user.lastName %>" required />
         </div>
         <div class="form-group">
-            <label for="email">Email*</label>
+            <label for="email"><%= __('email') %>*</label>
             <input type="email" id="email" class="form-control" name="email" value="<%= user.email %>" required />
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Save</button>
+            <button class="btn btn-primary"><%= __('save') %></button>
         </div>
         <div class="form-group">
             <hr/>

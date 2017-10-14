@@ -17,18 +17,30 @@ module.exports = {
     "register": "/user/register",
     "resetpwd": "/user/resetpwd",
     "user_account": "/user/myaccount/",
-    "post_create": "/post/create"
+    "post_create": "/post/create",
+    "link": {
+      "login": "/user/authenticate/",
+      "register": "/user/register/",
+      "my_account": "/user/myaccount/",
+      "all_posts": "/post/all/",
+      "user_post": "/post/user/",
+      "create_post": "/post/create/",
+      "get_post": "/post/detail/",
+      "edit_post": "/post/edit/",
+      "delete_post": "/post/detail/"
+    }
   },
   "app":{
-    "route": {
-      "login": "/login",
-      "register": "/register",
-      "forgotpwd": "/forgotpwd",
-      "resetpwd": "/resetpwd",
-      "my_account": "/myaccount",
-      "post": "/post",
-      "my_posts": "/myposts",
-      "edit_post": "/edit/post" 
-    }
+    "login": "/login",
+    "register": "/register",
+    "forgotpwd": "/forgotpwd",
+    "resetpwd": "/resetpwd",
+    "home": "/",
+    "my_account": "/myaccount",
+    "post": "/post",
+    "my_posts": "/myposts",
+    "edit_post": "/edit/post",
+    "create_post": "/post/create/",
+    "myaccount": "/myaccount",
   }
 }

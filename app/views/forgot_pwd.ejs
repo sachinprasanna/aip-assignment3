@@ -1,6 +1,6 @@
 ﻿<%- include('partials/header') %>
 <div class="forgtpwd form-container">
-    <h2><%= lang.frgtpwd %></h2>
+    <h2><%= __('frgtpwd') %></h2>
     <% if(locals.error) { %>
         <div class="alert alert-danger"><%= error %></div>
     <% } %>
@@ -9,12 +9,12 @@
     <% } %>
     <form method="post">
         <div class="form-group">
-            <label for="email"><%= lang.email %></label>
+            <label for="email"><%= __('email') %></label>
             <input type="email" name="email" id="email" value="<%= locals.email || '' %>" class="form-control" />
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary"><%= lang.reset_text %></button><br/>
-            <%= lang.click_here %> <a href="<%= uri.app.login %>"><%= lang.login %></a>
+            <button type="submit" class="btn btn-primary"><%= __('reset_text') %></button><br/>
+            <%= __('click_here') %> <a href="<%= uri.app.login %>"><%= __('login') %></a>
         </div>
     </form>
 </div>

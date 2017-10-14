@@ -42,8 +42,13 @@ function createPost(req, res) {
   req.getValidationResult().then(function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
+      var errorArray = errors.array();
+      var msg = '';
+      for (i = 0; i < errorArray.length; i++) { 
+          msg += errorArray[i].msg + ".";
+      }
+      res.send({ status: 0, response: msg });
       //util.inspect(errors.array())
-      res.send({ status: 0, response: errors.array() });
       return;
     }
 
@@ -92,7 +97,12 @@ function updateUserPostById(req, res) {
     //throw error, if any
     if (!errors.isEmpty()) {
       //util.inspect(errors.array())
-      res.send({ status: 0, response: errors.array() });
+      var errorArray = errors.array();
+      var msg = '';
+      for (i = 0; i < errorArray.length; i++) { 
+          msg += errorArray[i].msg + ".";
+      }
+      res.send({ status: 0, response: msg });
       return;
     }
 
@@ -101,9 +111,9 @@ function updateUserPostById(req, res) {
     //save post in DB
     postService
       .update(postId, userId, postParam)
-      .then(function() {
+      .then(function(post) {
         // post added in DB
-        res.send({ status: 1, response: "Post updated successfully." });
+        res.send({ status: 1, response: "Post updated successfully.", result: post });
       })
       .catch(function(err) {
         res.send({ status: 0, response: err });
@@ -137,77 +147,3 @@ function getAllPosts(req, res) {
       res.send({ status: 0, response: err });
     });
 }
-
-/*
-@method updateUser
-
-update user's info
-
-@param req - request from frontend
-@param res - result to frontend
-@return    - null
-
-*/
-//function updateCurrentUser(req, res) {
-//  var userId = req.params._id;
-//  if (req.user._id != userId) {
-//    // can only update own account
-//    return res.send({ status: 0, response: "You can only update your own account." });
-//  }
-//
-//  // validate the input
-//  req.checkBody("firstName", "First Name is required").notEmpty();
-//  req.checkBody("lastName", "Last Name is required").notEmpty();
-//  req.checkBody("email", "Email is required").notEmpty();
-//  req.checkBody("email", "Email does not appear to be valid").isEmail();
-//
-//  // check the validation object for errors
-//  req.getValidationResult().then(function(errors) {
-//    //throw error, if any
-//    if (!errors.isEmpty()) {
-//      //util.inspect(errors.array())
-//      res.send({ status: 0, response: errors.array() });
-//      return;
-//    }
-//
-//    //update user in DB
-//    userService
-//      .update(userId, req.body)
-//      .then(function() {
-//        // user account updated successfully
-//        res.send({ status: 1, response: "Account updated successfully." , user: req.body});
-//      })
-//      .catch(function(err) {
-//        // catch error
-//        res.send({ status: 0, response: err });
-//      });
-//  });
-//}
-//
-///*
-//@method deleteUser
-//
-//delete user's account
-//
-//@param req - request from frontend
-//@param res - result to frontend
-//@return    - null
-//
-//*/
-//function deleteCurrentUser(req, res) {
-//  var userId = req.params._id;
-//  if (req.user._id != userId) {
-//    // can only delete own account
-//    res.send({ status: 0, response: "You can only delete your own account" });
-//  }
-//
-//  userService
-//    .delete(userId)
-//    .then(function() {
-//      // deletion successful
-//      res.send({ status: 1, response: "Account deleted successfully." });
-//    })
-//    .catch(function(err) {
-//      res.send({ status: 0, response: err });
-//    });
-//}

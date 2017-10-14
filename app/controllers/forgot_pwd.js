@@ -2,10 +2,9 @@
 var router = express.Router();
 var request = require('request');
 var config = require('config/config');
-var lang = require('lang/en/text.json');
 var uri = require('config/uri');
 
-var _viewData = { lang: lang, uri: uri };
+var _viewData = { uri: uri };
 
 router.get('/', function (req, res) {console.log('hello');
   // log user out
