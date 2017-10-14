@@ -9,18 +9,22 @@ User controller for
 */
 
 /* imports for express router, database for users and passport */
-var express = require("express");
-var router = express.Router();
-var userService = require("api/models/user");
-var passport = require("passport");
+const express     = require("express");
+const router      = express.Router();
+const userService = require("api/models/user");
+const passport    = require("passport");
+const sendmail    = require('sendmail')();
+const config      = require('config/config');
+const uri         = require('config/uri');
+const i18n        = require("i18n");
 
 /* routes for user api controller */
-router.post("/authenticate", authenticateUser);
-router.post("/register", registerUser);
-router.post("/resetpwd", resetPassword);
-router.get('/myaccount/', passport.authenticate('jwt', { session: false }), getUser);
-router.put('/myaccount/:_id', passport.authenticate('jwt', { session: false }), updateCurrentUser);
-router.delete('/myaccount/:_id', passport.authenticate('jwt', { session: false }), deleteCurrentUser);
+router.post(uri.api.route.user_authenticate,  authenticateUser);
+router.post(uri.api.route.user_register,      registerUser);
+router.post(uri.api.route.user_resetpwd,      resetPassword);
+router.get(uri.api.route.user_myaccount,      passport.authenticate('jwt', { session: false }), getUser);
+router.put(uri.api.route.user_myaccount    + '/:_id', passport.authenticate('jwt', { session: false }), updateCurrentUser);
+router.delete(uri.api.route.user_myaccount + '/:_id', passport.authenticate('jwt', { session: false }), deleteCurrentUser);
 
 // Export default for router
 module.exports = router;
@@ -37,18 +41,18 @@ authenticate user for login, return token if user valid
 */
 function authenticateUser(req, res) {
   // validate the input
-  req.checkBody("email", "Email is required").notEmpty();
-  req.checkBody("email", "Email does not appear to be valid").isEmail();
-  req.checkBody("password", "Password is required").notEmpty();
+  req.checkBody("email",    i18n.__('email_required')).notEmpty();
+  req.checkBody("email",    i18n.__('invalid_email')).isEmail();
+  req.checkBody("password", i18n.__('password_required')).notEmpty();
   
   // check the validation object for errors
   req.getValidationResult().then(function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
-      var errorArray = errors.array();
-      var msg = '';
+      let errorArray  = errors.array();
+      let msg         = '';
       for (i = 0; i < errorArray.length; i++) { 
-          msg += errorArray[i].msg + ".";
+          msg         += errorArray[i].msg + ".";
       }
       res.send({ status: 0, response: msg });
     } else { 
@@ -56,23 +60,23 @@ function authenticateUser(req, res) {
       //check for valid user in DB
       userService
         .authenticate(req.body.email, req.body.password)
-        .then(function(user) {
+        .then( function(user) {
           if (user) {
             // authentication successful, return token
             res.send({ status: 1, response: user });
           } else {
             // authentication failed
-            res.send({ status: 0, response: "Email or password is incorrect." });
+            res.send({ status: 0, response: i18n.__('incorrect_credentials') });
           }
         })
         // catch error if anything other than authentication error
-        .catch(function(err) {
+        .catch( function(err) {
           res.send({ status: 0, response: err });
         });
     }
   })
-  .catch(function(err) {
-    res.send({ status: 0, response: 'An unexpected error occurred!' });
+  .catch( function(err) {
+    res.send({ status: 0, response: i18n.__('unexpected_error') });
   });
 }
 
@@ -88,29 +92,34 @@ register a new user
 */
 function registerUser(req, res) {
   // validate the input
-  req.checkBody("firstName", "First Name is required").notEmpty();
-  req.checkBody("lastName", "Last Name is required").notEmpty();
-  req.checkBody("email", "Email is required").notEmpty();
-  req.checkBody("email", "Email does not appear to be valid").isEmail();
-  req.checkBody("password", "Password is required").notEmpty();
+  req.checkBody("firstName",  i18n.__('firstname_required')).notEmpty();
+  req.checkBody("lastName",   i18n.__('lastname_required')).notEmpty();
+  req.checkBody("email",      i18n.__('email_required')).notEmpty();
+  req.checkBody("email",      i18n.__('invalid_email')).isEmail();
+  req.checkBody("password",   i18n.__('password_required')).notEmpty();
 
   // check the validation object for errors
-  req.getValidationResult().then(function(errors) {
+  req.getValidationResult().then( function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
       //util.inspect(errors.array())
-      res.send({ status: 0, response: errors.array() });
+      let errorArray  = errors.array();
+      let msg         = '';
+      for (i = 0; i < errorArray.length; i++) { 
+          msg         += errorArray[i].msg + ".";
+      }
+      res.send({ status: 0, response: msg });
       return;
     }
 
     //save user in DB
     userService
       .create(req.body)
-      .then(function() {
+      .then( function() {
         // User successfully registered
-        res.send({ status: 1, response: "User registered successfully." });
+        res.send({ status: 1, response: i18n.__('user_registered') });
       })
-      .catch(function(err) {
+      .catch( function(err) {
         res.send({ status: 0, response: err });
       });
   });
@@ -118,17 +127,17 @@ function registerUser(req, res) {
 
 function resetPassword(req, res){
   // validate the input
-  req.checkBody("email", "Email is required").notEmpty();
-  req.checkBody("email", "Email does not appear to be valid").isEmail();
+  req.checkBody("email",      i18n.__('email_required')).notEmpty();
+  req.checkBody("email",      i18n.__('invalid_email')).isEmail();
   
   // check the validation object for errors
-  req.getValidationResult().then(function(errors) {
+  req.getValidationResult().then( function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
-      var errorArray = errors.array();
-      var msg = '';
+      let errorArray  = errors.array();
+      let msg         = '';
       for (i = 0; i < errorArray.length; i++) { 
-          msg += errorArray[i].msg + ".";
+          msg         += errorArray[i].msg + ".";
       }
       res.send({ status: 0, response: msg });
     } else { 
@@ -136,23 +145,30 @@ function resetPassword(req, res){
       //check for valid user in DB
       userService
         .getByEmail(req.body.email)
-        .then(function(user) {
+        .then( function(user) {
           if (user) {
             // authentication successful, return token
-            res.send({ status: 1, response: "Password has been reset and sent to your email." });
+              sendmail({
+                from    : config.email_from,
+                to      : req.body.email,
+                subject : i18n.__('reset_password'),
+                html    : '<a href="' + config.appUrl + uri.api.link.resetpwd + '" target="_blank">' + i18n.__('click_to_reset') + '</a>',
+              }, function(err, reply) {
+                res.end( i18n.__('password_sent') );
+            });
           } else {
             // authentication failed
             res.send({ status: 0, response: "Account does not exist" });
           }
         })
         // catch error if anything other than authentication error
-        .catch(function(err) {
+        .catch( function(err) {
           res.send({ status: 0, response: err });
         });
     }
   })
-  .catch(function(err) {
-    res.send({ status: 0, response: 'An unexpected error occurred!' });
+  .catch( function(err) {
+    res.send({ status: 0, response: i18n.__('unexpected_error') });
   });
 }
 
@@ -167,19 +183,19 @@ get user's info
 
 */
 function getUser(req, res) {
-  var userId = req.user._id;
+  let userId = req.user._id;
   userService
     .getById(userId)
-    .then(function(user) {
+    .then( function(user) {
       if (user) {
         // result should return the user
         res.send({ status: 1, response: user });
       } else {
         // user not found
-        res.send({ status: 0, response: "User not found." });
+        res.send({ status: 0, response: i18n.__('no_user') });
       }
     })
-    .catch(function(err) {
+    .catch( function(err) {
       // return error
       res.send({ status: 0, response: err });
     });
@@ -196,35 +212,40 @@ update user's info
 
 */
 function updateCurrentUser(req, res) {
-  var userId = req.params._id;
+  let userId = req.params._id;
   if (req.user._id != userId) {
     // can only update own account
-    return res.send({ status: 0, response: "You can only update your own account." });
+    return res.send({ status: 0, response: i18n.__('own_account_restriction') });
   }
 
   // validate the input
-  req.checkBody("firstName", "First Name is required").notEmpty();
-  req.checkBody("lastName", "Last Name is required").notEmpty();
-  req.checkBody("email", "Email is required").notEmpty();
-  req.checkBody("email", "Email does not appear to be valid").isEmail();
+  req.checkBody("firstName",  i18n.__('firstname_required')).notEmpty();
+  req.checkBody("lastName",   i18n.__('lastname_required')).notEmpty();
+  req.checkBody("email",      i18n.__('email_required')).notEmpty();
+  req.checkBody("email",      i18n.__('invalid_email')).isEmail();
 
   // check the validation object for errors
-  req.getValidationResult().then(function(errors) {
+  req.getValidationResult().then( function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
       //util.inspect(errors.array())
-      res.send({ status: 0, response: errors.array() });
+      let errorArray  = errors.array();
+      let msg         = '';
+      for (i = 0; i < errorArray.length; i++) { 
+          msg         += errorArray[i].msg + ".";
+      }
+      res.send({ status: 0, response: msg });
       return;
     }
 
     //update user in DB
     userService
       .update(userId, req.body)
-      .then(function() {
+      .then( function() {
         // user account updated successfully
-        res.send({ status: 1, response: "Account updated successfully." , user: req.body});
+        res.send({ status: 1, response: i18n.__('account_updated') , user: req.body});
       })
-      .catch(function(err) {
+      .catch( function(err) {
         // catch error
         res.send({ status: 0, response: err });
       });
@@ -242,19 +263,19 @@ delete user's account
 
 */
 function deleteCurrentUser(req, res) {
-  var userId = req.params._id;
+  let userId = req.params._id;
   if (req.user._id != userId) {
     // can only delete own account
-    res.send({ status: 0, response: "You can only delete your own account" });
+    res.send({ status: 0, response: i18n.__('own_account_delete') });
   }
 
   userService
     .delete(userId)
-    .then(function() {
+    .then( function() {
       // deletion successful
-      res.send({ status: 1, response: "Account deleted successfully." });
+      res.send({ status: 1, response: i18n.__('account_deleted') });
     })
-    .catch(function(err) {
+    .catch( function(err) {
       res.send({ status: 0, response: err });
     });
 }

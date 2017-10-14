@@ -14,8 +14,8 @@ const i18n        = require("i18n");
 /* routes for post api controller */
 router.post(uri.api.route.post_create,          createPost);
 router.get(uri.api.route.post_detail + '/:id',  getUserPostById);
-router.post(uri.api.route.post_edit + '/:id',   updateUserPostById);
-router.get(uri.api.route.post_user + '/:id',    getUserPosts);
+router.post(uri.api.route.post_edit  + '/:id',   updateUserPostById);
+router.get(uri.api.route.post_user   + '/:id',    getUserPosts);
 router.get(uri.api.route.all_posts,             getAllPosts);
 
 // Export default for router
@@ -59,11 +59,11 @@ function createPost(req, res) {
     //save post in DB
     postService
       .create(postParam)
-      .then(function() {
+      .then( function() {
         // post added in DB
         res.send({ status: 1, response: i18n.__('post_added') });
       })
-      .catch(function(err) {
+      .catch( function(err) {
         res.send({ status: 0, response: err });
       });
   });
@@ -74,12 +74,12 @@ function getUserPostById(req, res) {
   let userId = req.user._id;
   postService
     .getUserPost(postId, userId)
-    .then(function(posts) {
-      posts.toArray(function(err, postList) {
+    .then( function(posts) {
+      posts.toArray( function(err, postList) {
         res.send({ status: 1, response: postList[0] });
       });
     })
-    .catch(function(err) {
+    .catch( function(err) {
       // return error
       res.send({ status: 0, response: err });
     });
@@ -94,7 +94,7 @@ function updateUserPostById(req, res) {
   req.checkBody("content",  i18n.__('content_required')).notEmpty();
 
   // check the validation object for errors
-  req.getValidationResult().then(function(errors) {
+  req.getValidationResult().then( function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
       //util.inspect(errors.array())
@@ -112,11 +112,11 @@ function updateUserPostById(req, res) {
     //save post in DB
     postService
       .update(postId, userId, postParam)
-      .then(function(post) {
+      .then( function(post) {
         // post added in DB
         res.send({ status: 1, response: i18n.__('post_updated'), result: post });
       })
-      .catch(function(err) {
+      .catch( function(err) {
         res.send({ status: 0, response: err });
       });
   });
@@ -126,12 +126,12 @@ function getUserPosts(req, res) {
   let userId = req.params.id;
   postService
     .getUserPosts(userId)
-    .then(function(posts) {
-      posts.toArray(function(err, postList) {
+    .then( function(posts) {
+      posts.toArray( function(err, postList) {
         res.send({ status: 1, response: postList });
       });
     })
-    .catch(function(err) {
+    .catch( function(err) {
       // return error
       res.send({ status: 0, response: err });
     });
@@ -140,10 +140,10 @@ function getUserPosts(req, res) {
 function getAllPosts(req, res) {
   postService
     .getAllPosts(req.query.q)
-    .then(function(posts) {
+    .then( function(posts) {
       res.send({ status: 1, response: posts });
     })
-    .catch(function(err) {
+    .catch( function(err) {
       // return error
       res.send({ status: 0, response: err });
     });

@@ -21,7 +21,7 @@
         <tr>
           <td><%= posts[i].title %></td>
           <td align="center" class="aligncenter">
-            <a href="/post/edit/<%= posts[i]._id %>" class="btn btn-primary"><%= __('edit') %></a>
+            <a href="<%= uri.app.link.edit_post %><%= posts[i]._id %>" class="btn btn-primary"><%= __('edit') %></a>
           </td>
         </tr>
         <% } %>

@@ -23,7 +23,7 @@ router.post('/', function (req, res) {
   delete data.error
   
   request.put({
-    url   : config.apiUrl + uri.api.user_account + userId,
+    url   : config.apiUrl + uri.api.link.user_account + userId,
     form  : req.body,
     headers: {'Authorization': req.session.token},
     json  : true

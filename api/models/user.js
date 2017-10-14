@@ -26,7 +26,7 @@ function authenticate(email, password) {
 
   //get user by email
   db.users.findOne({ email: email }, function (err, user) {
-    if (err) deferred.reject(err.name + ': ' + err.message);
+    if (err) deferred.reject( err.name + ': ' + err.message );
 
     //compare password if user valid
     if (user && bcrypt.compareSync(password, user.hash)) {

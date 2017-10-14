@@ -21,7 +21,7 @@ router.post('/', function (req, res) {
   // authenticate using api to maintain clean separation between layers
   
   request.post({
-    url : config.apiUrl + uri.api.login,
+    url : config.apiUrl + uri.api.link.login,
     form: req.body,
     json: true
   }, function (error, response, body) {

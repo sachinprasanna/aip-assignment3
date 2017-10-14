@@ -1,15 +1,15 @@
-var JwtStrategy = require('passport-jwt').Strategy;  
-var ExtractJwt = require('passport-jwt').ExtractJwt;  
-var userService = require('api/models/user');
-var config = require('./config');
+const JwtStrategy = require('passport-jwt').Strategy;  
+const ExtractJwt  = require('passport-jwt').ExtractJwt;  
+const userService = require('api/models/user');
+const config      = require('./config');
 
 // Setup work and export for the JWT passport strategy
-module.exports = function(passport) {  
-  var opts = {};
+module.exports  = function(passport) {  
+  let opts            = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  opts.secretOrKey = config.session_secret;
+  opts.secretOrKey    = config.session_secret;
 
-  var strategy = new JwtStrategy(opts, function(jwt_payload, done) {
+  const strategy      = new JwtStrategy(opts, function(jwt_payload, done) {
     userService.getById(jwt_payload.id)
       .then(function (user) {
         if (user) { 
@@ -19,7 +19,7 @@ module.exports = function(passport) {
         }
       })
       .catch(function (err) {
-        res.send({'status': 0, 'response': err});
+        res.send({ 'status': 0, 'response': err });
       });
   });
 

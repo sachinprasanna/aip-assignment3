@@ -15,11 +15,11 @@
         <div class="form-group">
             <label for="password"><%= __('password') %></label>
             <input type="password" name="password" id="password" class="form-control" />
-            <a href="<%= uri.app.forgotpwd %>"><i><%= __('frgtpwd') %>?</i></a>
+            <a href="<%= uri.app.link.forgotpwd %>"><i><%= __('frgtpwd') %>?</i></a>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary"><%= __('login') %></button>
-            <%= __('no_account_text') %> <a href="<%= uri.app.register %>"><%= __('register') %></a>
+            <%= __('no_account_text') %> <a href="<%= uri.app.link.register %>"><%= __('register') %></a>
         </div>
     </form>
 </div>
