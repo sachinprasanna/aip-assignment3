@@ -1,5 +1,5 @@
 ﻿//File used to interact with DB (Mongo DB)
-var config = require('config/config.json');
+var config = require('config/config');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs'); //encrypt password
@@ -34,13 +34,10 @@ function authenticate(email, password) {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
+        email: user.email
       };
 
-      //deferred.resolve(jwt.sign(profile, config.secret, {
-      //  expiresIn: 10080 // in seconds
-      //}));
-      deferred.resolve({ "token": "Bearer " + jwt.sign({id: user._id}, config.secret, {
+      deferred.resolve({ "token": "Bearer " + jwt.sign({id: user._id}, config.session_secret, {
           expiresIn: 10080 // in seconds
         }),"user": profile });
     } else {
@@ -106,6 +103,13 @@ function create(userParam) {
         // email already exists
         deferred.reject('Email "' + userParam.email + '" is already taken');
       } else {
+        //reset userParam variable to contain required values
+        userParam = {
+          firstName: userParam.firstName,
+          lastName: userParam.lastName,
+          email: userParam.email,
+          password: userParam.password
+        }
         createUser();
       }
     });
@@ -149,7 +153,7 @@ function update(_id, userParam) {
 
           if (user) {
             // email already exists
-            deferred.reject('Email "' + req.body.email + '" is already taken')
+            deferred.reject('Email "' + userParam.email + '" is already taken')
           } else {
             updateUser();
         }

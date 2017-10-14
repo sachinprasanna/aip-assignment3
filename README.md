@@ -25,7 +25,7 @@ $ npm start
 
 #API Docs
 
-**NOTE:** API Url: http://localhost:3000/
+**NOTE:** API Url: http://localhost:8000/
 
 ### Register User [POST] (/api/user/register/)
 + Request
@@ -50,7 +50,7 @@ $ npm start
     + Headers
       Authorization : USER TOKEN
 
-### Update user detail [PUT] (/api/user/update/USER ID)
+### Update user detail [PUT] (/api/user/myaccount/USER ID)
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -61,7 +61,43 @@ $ npm start
         "email":"john12@example.com"
     }    
 
-### Delete user account [DELETE] (/api/user/delete/USER ID)
+### Delete user account [DELETE] (/api/user/myaccount/USER ID)
 + Request
     + Headers
       Authorization : USER TOKEN
+
+### Get all posts [GET] (/api/post/all/)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+
+### Get a user's posts [GET] (/api/post/user/USER ID)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+      
+### Add new post [POST] (/api/post/create/)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+    + Body (application/json)
+    {
+      "title": "test1",
+      "content": "testing content"
+    }
+
+### Get post detail [GET] (/api/post/detail/POST ID)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+ 
+### Edit a post [POST] (/api/post/edit/POST ID)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+    + Body (application/json)
+    {
+      "title": "test1",
+      "content": "testing content",
+      "version": 1
+    }

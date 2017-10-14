@@ -1,8 +1,6 @@
 ﻿//File used to interact with DB (Mongo DB)
-var config = require('config/config.json');
+var config = require('config/config');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs'); //encrypt password
 var Q = require('q');
 var mongo = require('mongoskin');
 var db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
@@ -28,18 +26,18 @@ service.getAllPosts = getAllPosts;
 module.exports = service;
 
 //create new post
-function create(postParam) {
+function create(post) {
   var deferred = Q.defer();
   
   // fields to add
   var collectionData = {
-    title: postParam.title,
-    content: postParam.content,
-    userId: postParam.userId,
+    title: post.title,
+    content: post.content,
+    userId: post.userId,
     version: 1,
     createdAt: new Date()
   };
-   console.log(collectionData);
+
   //insert in table
   db.posts.insert(
     collectionData,
@@ -103,9 +101,7 @@ function update(_id, userId, postParam) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 
       post.toArray(function(err, postList) {
-        console.log(postList[0]);
         
-        console.log(postList[0].version + ', ' + postParam.version);
         //check version of post
         if(postList[0].version != postParam.version) { deferred.reject('error: Wrong version!' ); return  deferred.promise; }
         
@@ -148,10 +144,10 @@ function _delete(_id) {
   return deferred.promise;
 }
 
-//get all post by user
+//get all post by a user
 function getUserPosts(userId) {
   var deferred = Q.defer(); //save promise
-  deferred.resolve(db.posts.find({ "userId": userId }).sort({ createdAt: -1 }));
+  deferred.resolve(db.posts.find({ "userId": mongo.helper.toObjectID(userId) }).sort({ createdAt: -1 }));
   return deferred.promise;
 }
 
@@ -164,6 +160,7 @@ function getAllPosts(searchParam){
     queryOption.push({ $match : { $text: { $search: searchParam } } })
   }
   
+  //set query for search
   queryOption.push({
         "$lookup":
         {

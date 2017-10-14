@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var config = require('config/config.json');
+var config = require('config/config');
 var lang = require('lang/en/text.json');
 var uri = require('config/uri');
 

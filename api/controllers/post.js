@@ -5,20 +5,17 @@ Post controller for
 */
 
 /* imports for express router, database for users and passport */
-var express = require("express");
-var router = express.Router();
-var postService = require("api/models/post");
-var passport = require("passport");
+const express = require("express");
+const router = express.Router();
+const postService = require("api/models/post");
+const uri = require('config/uri');
 
 /* routes for post api controller */
-router.post('/create/', createPost);
-router.get('/edit/:id', getUserPostById);
-router.post('/edit/:id', updateUserPostById);
-router.get('/myposts/', getUserPosts);
-router.get('/all/', getAllPosts);
-
-//router.put('/myaccount/:_id', passport.authenticate('jwt', { session: false }), updateCurrentUser);
-//router.delete('/myaccount/:_id', passport.authenticate('jwt', { session: false }), deleteCurrentUser);
+router.post(uri.api.route.post_create, createPost);
+router.get(uri.api.route.post_detail + '/:id', getUserPostById);
+router.post(uri.api.route.post_edit + '/:id', updateUserPostById);
+router.get(uri.api.route.post_user + '/:id', getUserPosts);
+router.get(uri.api.route.all_posts, getAllPosts);
 
 // Export default for router
 module.exports = router;
@@ -115,7 +112,7 @@ function updateUserPostById(req, res) {
 }
 
 function getUserPosts(req, res) {
-  var userId = req.user._id;
+  var userId = req.params.id;
   postService
     .getUserPosts(userId)
     .then(function(posts) {

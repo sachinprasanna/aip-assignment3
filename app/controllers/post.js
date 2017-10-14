@@ -3,7 +3,7 @@ const router = express.Router();
 const request = require('request');
 const jwt = require('jsonwebtoken');
 const nl2br  = require('nl2br');
-const config = require('config/config.json');
+const config = require('config/config');
 const lang = require('lang/en/text.json');
 const uri = require('config/uri');
 
