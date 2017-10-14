@@ -6,7 +6,7 @@ const nl2br  = require('nl2br');
 const config = require('config/config');
 const uri = require('config/uri');
 
-var _viewData = { uri: uri };
+let _viewData = { uri: uri };
   
 router.get('/', function (req, res) {
   delete _viewData.success

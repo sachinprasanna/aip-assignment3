@@ -1,14 +1,14 @@
-﻿var express = require('express');
-var router = express.Router();
-var request = require('request');
-var jwt = require('jsonwebtoken');
-var config = require('config/config');
-var uri = require('config/uri');
+﻿const express = require('express');
+const router = express.Router();
+const request = require('request');
+const jwt = require('jsonwebtoken');
+const config = require('config/config');
+const uri = require('config/uri');
 
-var _viewData = { uri: uri };
+let _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
-  var data = _viewData;
+  let data = _viewData;
   data.user = req.session.user;
   delete data.success
   delete data.error
@@ -16,8 +16,8 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-  var data = _viewData;
-  var userId = req.session.user.id;
+  let data = _viewData;
+  let userId = req.session.user.id;
   delete data.success
   delete data.error
   

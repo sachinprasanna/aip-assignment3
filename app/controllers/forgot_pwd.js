@@ -1,10 +1,10 @@
-﻿var express = require('express');
-var router = express.Router();
-var request = require('request');
-var config = require('config/config');
-var uri = require('config/uri');
+﻿const express = require('express');
+const router = express.Router();
+const request = require('request');
+const config = require('config/config');
+const uri = require('config/uri');
 
-var _viewData = { uri: uri };
+let _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
   // log user out
