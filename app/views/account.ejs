@@ -19,17 +19,19 @@
 								<div class="form-group">
 									<label for="firstName">
 										<%= __('first_name') %>*</label>
-									<input type="text" id="firstName" class="form-control" name="firstName" value="<%= user.firstName %>" required />
+									<input type="text" id="firstName" class="form-control" name="firstName" maxlength="50" value="<%= user.firstName %>" required
+									/>
 								</div>
 								<div class="form-group">
 									<label for="lastName">
 										<%= __('last_name') %>*</label>
-									<input type="text" id="lastName" class="form-control" name="lastName" value="<%= user.lastName %>" required />
+									<input type="text" id="lastName" class="form-control" name="lastName" maxlength="50" value="<%= user.lastName %>" required
+									/>
 								</div>
 								<div class="form-group">
 									<label for="email">
 										<%= __('email') %>*</label>
-									<input type="email" id="email" class="form-control" name="email" value="<%= user.email %>" required />
+									<input type="email" id="email" class="form-control" name="email" maxlength="255" value="<%= user.email %>" required />
 								</div>
 								<div class="form-group">
 									<button class="btn btn-primary">

@@ -4,6 +4,7 @@ const bodyParser        = require('body-parser');
 const passport          = require('passport');
 const expressValidator  = require('express-validator');
 const session           = require('express-session');
+const path              = require('path');
 const config            = require('config/config');
 const port              = process.env.PORT || config.port;
 const i18n              = require("i18n");
@@ -29,7 +30,7 @@ i18n.configure({
 i18n.setLocale(config.lang);
 
 /** add static files */
-app.use(express.static(__dirname, '/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 
 /** api routes */
 app.use('/api', require('./api/router'));
