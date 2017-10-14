@@ -39,7 +39,6 @@ router.post('/', function (req, res) {
     data.user.id      = userId;
     data.success      = body.response;
     
-    // redirect to returnUrl
     res.render('account', data);
   });
 });

@@ -79,7 +79,7 @@ router.get('/edit/:id', function (req, res) {
       return res.redirect('/');
     }
 
-    //if not post exists
+    /** if not post exists, redirect to home */
     if(!body.response) return res.redirect('/');
 
     _viewData.post = body.response;

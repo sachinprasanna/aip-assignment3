@@ -1,13 +1,13 @@
-﻿//File used to interact with DB (Mongo DB)
+﻿/** File used to interact with DB (Mongo DB) */
 const config  = require('config/config');
 const _       = require('lodash');
 const i18n    = require("i18n");
 const jwt     = require('jsonwebtoken');
-const bcrypt  = require('bcryptjs'); //encrypt password
+const bcrypt  = require('bcryptjs'); /** encrypt password */
 const Q       = require('q');
 const mongo   = require('mongoskin');
 const db      = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
-db.bind('users'); //users table
+db.bind('users'); /** users table */
 
 const service = {};
 
@@ -20,17 +20,17 @@ service.delete        = _delete;
 
 module.exports        = service;
 
-//authenticate user
+/** authenticate user */
 function authenticate(email, password) {
   let deferred = Q.defer();
 
-  //get user by email
+  /** get user by email */
   db.users.findOne({ email: email }, function (err, user) {
     if (err) deferred.reject( err.name + ': ' + err.message );
 
-    //compare password if user valid
+    /** compare password if user valid */
     if (user && bcrypt.compareSync(password, user.hash)) {
-      // authentication successful, return token
+      /** authentication successful, return token */
       let profile = {
         id        : user._id,
         firstName : user.firstName,
@@ -46,7 +46,7 @@ function authenticate(email, password) {
                                           }),
                       "user": profile });
     } else {
-      // authentication failed
+      /** authentication failed */
       deferred.resolve();
     }
   });
@@ -54,19 +54,18 @@ function authenticate(email, password) {
   return deferred.promise;
 }
 
-//get user by id
+/** get user by id */
 function getById(_id) {
   let deferred = Q.defer(); //save promise
 
-  //find user by id
+  /** find user by id */
   db.users.findById(_id, function (err, user) {
     if (err) deferred.reject(err.name + ': ' + err.message);
 
     if (user) {
-      // return user (without hashed password)
       deferred.resolve(_.omit(user, 'hash'));
     } else {
-      // user not found
+      /** user not found */
       deferred.resolve();
     }
   });
@@ -77,7 +76,7 @@ function getById(_id) {
 function getByEmail(email){
   let deferred = Q.defer(); //save promise
 
-  // validate user
+  /** validate user */
   db.users.findOne(
     { email: email },
     function (err, user) {
@@ -86,7 +85,7 @@ function getByEmail(email){
       if (user) {
         deferred.resolve(user);
       } else {
-        // email does not exists
+        /** email does not exists */
         deferred.reject(i18n.__('no_account'));
       }
     });
@@ -94,21 +93,21 @@ function getByEmail(email){
   return deferred.promise;
 }
 
-//create new user
+/** create new user */
 function create(userParam) {
   let deferred = Q.defer();
 
-  // validate user
+  /** validate user */
   db.users.findOne(
     { email: userParam.email },
     function (err, user) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 
       if (user) {
-        // email already exists
+        /** email already exists */
         deferred.reject(i18n.__('email_already_exist', userParam.email));
       } else {
-        //reset userParam variable to contain required values
+        /** reset userParam variable to contain required values */
         userParam = {
           firstName : userParam.firstName,
           lastName  : userParam.lastName,
@@ -119,15 +118,15 @@ function create(userParam) {
       }
     });
 
-  //save user detail in DB
+  /** save user detail in DB */
   function createUser() {
-    // set user object to userParam without the cleartext password
+    /** set user object to userParam without the cleartext password */
     let user = _.omit(userParam, 'password');
 
-    // add hashed password to user object
+    /** add hashed password to user object */
     user.hash = bcrypt.hashSync(userParam.password, 10);
     
-    //insert in table
+    /** insert in table */
     db.users.insert(
       user,
       function (err, doc) {
@@ -140,24 +139,24 @@ function create(userParam) {
   return deferred.promise;
 }
 
-//update user detail
+/** insert in table */
 function update(_id, userParam) {
   let deferred = Q.defer();
 
-  // check if user id is relevant
+  /** check if user id is relevant */
   db.users.findById(_id, function (err, user) {
     if (err) deferred.reject(err.name + ': ' + err.message);
 
-    //check if email is changed
+    /** check if email is changed */
     if (user.email !== userParam.email) {
-      // email has changed so check if the new email is already taken
+      /** email has changed so check if the new email is already taken */
       db.users.findOne(
         { email: userParam.email },
         function (err, user) {
           if (err) deferred.reject(err.name + ': ' + err.message);
 
           if (user) {
-            // email already exists
+            /** email already exists */
             deferred.reject(i18n.__('email_already_exist', userParam.email));
           } else {
             updateUser();
@@ -168,21 +167,21 @@ function update(_id, userParam) {
     }
   });
 
-  //update user details
+  /** update user details */
   function updateUser() {
-    // fields to update
+    /** fields to update */
     let set = {
       firstName : userParam.firstName,
       lastName  : userParam.lastName,
       email     : userParam.email,
     };
 
-    // update password if it was entered
+    /** update password if it was entered */
     if (userParam.password) {
       set.hash = bcrypt.hashSync(userParam.password, 10);
     }
 
-    //update in table
+    /** update in table */
     db.users.update(
       { _id: mongo.helper.toObjectID(_id) },
       { $set: set },
@@ -196,11 +195,11 @@ function update(_id, userParam) {
   return deferred.promise;
 }
 
-//delete user account
+/** delete user account */
 function _delete(_id) {
   let deferred = Q.defer();
 
-  //delete record from table
+  /** delete record from table */
   db.users.remove(
     { _id: mongo.helper.toObjectID(_id) },
     function (err) {

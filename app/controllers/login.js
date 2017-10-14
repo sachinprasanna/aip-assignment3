@@ -7,10 +7,10 @@ const uri     = require('config/uri');
 let _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
-  // log user out
+  /** log user out */
   delete req.session.user;
 
-  // move success message into local variable so it only appears once (single read)
+  /** move success message into local variable so it only appears once (single read) */
   _viewData.success = req.session.success;
   delete req.session.success;
 
@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-  // authenticate using api to maintain clean separation between layers
+  /** authenticate using api to maintain clean separation between layers */
   
   request.post({
     url : config.apiUrl + uri.api.link.login,
@@ -32,11 +32,11 @@ router.post('/', function (req, res) {
       return res.render('login', _viewData);
     }
 
-    // save JWT token in the session to make it available
+    /** save JWT token in the session to make it available */
     req.session.token = body.response.token;
     req.session.user  = body.response.user;
     
-    // redirect to homepage
+    /** redirect to homepage */
     res.redirect('/');
   });
 });
