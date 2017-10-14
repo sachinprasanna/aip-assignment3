@@ -45,7 +45,9 @@ router.post('/create', function (req, res) {
   let userId = req.session.user.id;
   let postParam = req.body;
   let data = _viewData;
-  
+  delete data.error
+  delete data.success
+
   request.post({
     url: config.apiUrl + uri.api.link.create_post,
     form: postParam,
@@ -102,7 +104,7 @@ router.post('/edit/:id', function (req, res) {
       _viewData.error = body.response;
       return res.render('post_editor', _viewData);
     }
-console.log(body);
+
     _viewData.success = body.response;
     _viewData.post = body.result;
     return res.render('post_editor', _viewData);

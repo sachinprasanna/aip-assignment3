@@ -1,9 +1,10 @@
 ﻿//File used to interact with DB (Mongo DB)
-var config = require('config/config');
-var _ = require('lodash');
-var Q = require('q');
-var mongo = require('mongoskin');
-var db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const config = require('config/config');
+const _ = require('lodash');
+const i18n = require("i18n");
+const Q = require('q');
+const mongo = require('mongoskin');
+const db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('posts'); //posts table
 
 // set index on fields to make them searchable 
@@ -13,7 +14,7 @@ db.posts.createIndex(
     content: "text"
   }
 )
-var service = {};
+const service = {};
 
 service.create = create;
 service.getById = getById;
@@ -27,10 +28,10 @@ module.exports = service;
 
 //create new post
 function create(post) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
   
   // fields to add
-  var collectionData = {
+  let collectionData = {
     title: post.title,
     content: post.content,
     userId: post.userId,
@@ -52,7 +53,7 @@ function create(post) {
 
 //get post by id
 function getById(_id) {
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
 
   //find post by id
   db.posts.findById(_id, function (err, post) {
@@ -72,7 +73,7 @@ function getById(_id) {
 
 //get user's post by id
 function getUserPost(postId, userId) {
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
 
   //find post by id
   db.posts.find({'_id': mongo.helper.toObjectID(postId), 'userId': mongo.helper.toObjectID(userId)},
@@ -93,7 +94,7 @@ function getUserPost(postId, userId) {
 
 //update post
 function update(_id, userId, postParam) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   // check if post id is relevant
   db.posts.find({'_id': mongo.helper.toObjectID(_id), 'userId': mongo.helper.toObjectID(userId)},
@@ -103,10 +104,10 @@ function update(_id, userId, postParam) {
       post.toArray(function(err, postList) {
         
         //check version of post
-        if(postList[0].version != postParam.version) { deferred.reject('error: Wrong version!' ); return  deferred.promise; }
+        if(postList[0].version != postParam.version) { deferred.reject(i18n.__('invalid_version') ); return  deferred.promise; }
         
         // fields to update
-        var set = {
+        let set = {
           title: postParam.title,
           content: postParam.content,
           version: ++postList[0].version
@@ -130,7 +131,7 @@ function update(_id, userId, postParam) {
 
 //delete post
 function _delete(_id) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   //delete record from table
   db.posts.remove(
@@ -146,15 +147,15 @@ function _delete(_id) {
 
 //get all post by a user
 function getUserPosts(userId) {
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
   deferred.resolve(db.posts.find({ "userId": mongo.helper.toObjectID(userId) }).sort({ createdAt: -1 }));
   return deferred.promise;
 }
 
 function getAllPosts(searchParam){
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
   
-  var queryOption = [];
+  let queryOption = [];
   // if search query string variable is not empty, add to nosql query
   if(searchParam){
     queryOption.push({ $match : { $text: { $search: searchParam } } })

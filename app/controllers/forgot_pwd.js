@@ -6,7 +6,7 @@ var uri = require('config/uri');
 
 var _viewData = { uri: uri };
 
-router.get('/', function (req, res) {console.log('hello');
+router.get('/', function (req, res) {
   // log user out
   delete req.session.user;
 
@@ -17,7 +17,7 @@ router.get('/', function (req, res) {console.log('hello');
   res.render('forgot_pwd', _viewData);
 });
 
-router.post('/', function (req, res) { console.log(config.apiUrl + uri.api.resetpwd);
+router.post('/', function (req, res) {
   // authenticate using api to maintain clean separation between layers
   request.post({
     url: config.apiUrl + uri.api.resetpwd,

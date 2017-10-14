@@ -13,16 +13,15 @@
       <thead>
         <tr>
           <th width="70%"><%= __('title') %></th>
-          <th width="30%"><%= __('action') %></th>
+          <th width="30%" align="center" class="aligncenter"><%= __('action') %></th>
         </tr>
       </thead>
       <tbody>
         <% for(var i=0; i < posts.length; i++) {%>
         <tr>
           <td><%= posts[i].title %></td>
-          <td>
+          <td align="center" class="aligncenter">
             <a href="/post/edit/<%= posts[i]._id %>" class="btn btn-primary"><%= __('edit') %></a>
-            <!-- <a href="/post/delete/<%= posts[i]._id %>" class="btn btn-danger"><%= __('delete') %></a> -->
           </td>
         </tr>
         <% } %>

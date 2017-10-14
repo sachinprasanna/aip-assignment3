@@ -1,14 +1,15 @@
 ﻿//File used to interact with DB (Mongo DB)
-var config = require('config/config');
-var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs'); //encrypt password
-var Q = require('q');
-var mongo = require('mongoskin');
-var db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const config = require('config/config');
+const _ = require('lodash');
+const i18n = require("i18n");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs'); //encrypt password
+const Q = require('q');
+const mongo = require('mongoskin');
+const db = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('users'); //users table
 
-var service = {};
+const service = {};
 
 service.authenticate = authenticate;
 service.getById = getById;
@@ -21,7 +22,7 @@ module.exports = service;
 
 //authenticate user
 function authenticate(email, password) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   //get user by email
   db.users.findOne({ email: email }, function (err, user) {
@@ -30,7 +31,7 @@ function authenticate(email, password) {
     //compare password if user valid
     if (user && bcrypt.compareSync(password, user.hash)) {
       // authentication successful, return token
-      var profile = {
+      let profile = {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -51,7 +52,7 @@ function authenticate(email, password) {
 
 //get user by id
 function getById(_id) {
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
 
   //find user by id
   db.users.findById(_id, function (err, user) {
@@ -70,7 +71,7 @@ function getById(_id) {
 }
 
 function getByEmail(email){
-  var deferred = Q.defer(); //save promise
+  let deferred = Q.defer(); //save promise
 
   // validate user
   db.users.findOne(
@@ -82,7 +83,7 @@ function getByEmail(email){
         deferred.resolve(user);
       } else {
         // email does not exists
-        deferred.reject('Account does not exist');
+        deferred.reject(i18n.__('no_account'));
       }
     });
 
@@ -91,7 +92,7 @@ function getByEmail(email){
 
 //create new user
 function create(userParam) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   // validate user
   db.users.findOne(
@@ -101,7 +102,7 @@ function create(userParam) {
 
       if (user) {
         // email already exists
-        deferred.reject('Email "' + userParam.email + '" is already taken');
+        deferred.reject(i18n.__('email_already_exist', userParam.email));
       } else {
         //reset userParam variable to contain required values
         userParam = {
@@ -117,7 +118,7 @@ function create(userParam) {
   //save user detail in DB
   function createUser() {
     // set user object to userParam without the cleartext password
-    var user = _.omit(userParam, 'password');
+    let user = _.omit(userParam, 'password');
 
     // add hashed password to user object
     user.hash = bcrypt.hashSync(userParam.password, 10);
@@ -137,7 +138,7 @@ function create(userParam) {
 
 //update user detail
 function update(_id, userParam) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   // check if user id is relevant
   db.users.findById(_id, function (err, user) {
@@ -153,7 +154,7 @@ function update(_id, userParam) {
 
           if (user) {
             // email already exists
-            deferred.reject('Email "' + userParam.email + '" is already taken')
+            deferred.reject(i18n.__('email_already_exist', userParam.email));
           } else {
             updateUser();
         }
@@ -166,7 +167,7 @@ function update(_id, userParam) {
   //update user details
   function updateUser() {
     // fields to update
-    var set = {
+    let set = {
       firstName: userParam.firstName,
       lastName: userParam.lastName,
       email: userParam.email,
@@ -193,7 +194,7 @@ function update(_id, userParam) {
 
 //delete user account
 function _delete(_id) {
-  var deferred = Q.defer();
+  let deferred = Q.defer();
 
   //delete record from table
   db.users.remove(

@@ -19,7 +19,7 @@
     <!-- Post Container  -->
     <br/><br/>
     <% if(!posts.length) { %>
-        <div class="alert alert-danger">No results found.</div>
+        <div class="alert alert-danger"><%= __('no_result') %></div>
     <% } %>
     <% for(var i=0; i < posts.length; i++) {%>
     <div class="text-center singlepost">

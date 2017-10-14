@@ -3,6 +3,7 @@ var router = express.Router();
 var request = require('request');
 var config = require('config/config');
 var uri = require('config/uri');
+const i18n = require("i18n");
 
 var _viewData = { uri: uri };
 
@@ -37,7 +38,7 @@ router.post('/', function (req, res) {
     req.session.token = body.response;
 
     // return success message
-    _viewData.success = __('register_successfully');
+    _viewData.success = i18n.__('register_successfully');
     return res.render('register', _viewData);
   });
 });
