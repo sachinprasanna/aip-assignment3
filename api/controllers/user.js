@@ -320,7 +320,7 @@ function emailNewPasswordToUser(res, email, newPassword){
       from    : config.email_from,
       to      : email,
       subject : i18n.__('app_name') + '-' + i18n.__('reset_password_subject'),
-      html    : i18n.__('new_password_email_text') + newPassword,
+      html    : i18n.__('new_password_email_text') + ' ' + newPassword,
     }, function(err, reply) {
       res.end(i18n.__('password_sent'));
   });

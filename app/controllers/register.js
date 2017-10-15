@@ -1,3 +1,6 @@
+/*
+Controller for register routes
+*/
 const express = require('express');
 const router  = express.Router();
 const request = require('request');
@@ -5,20 +8,24 @@ const config  = require('config/config');
 const uri     = require('config/uri');
 const i18n    = require("i18n");
 
+//declare _viewData variable to pass to view and initialize with uri variables
 let _viewData = { uri: uri };
 
+/** [GET] route for /register 
+ * Display view to enter firstname, lastname, email and password
+*/
 router.get('/', function (req, res) {
   /** log user out */
   delete req.session.token;
   delete _viewData.success
   delete _viewData.error
 
-  /** move success message into local variable so it only appears once (single read) */
-  _viewData.success = req.session.success;
-  
   res.render('register', _viewData);
 });
 
+/** [POST] route for /register 
+ * Send entered email and password to API for authentication
+*/
 router.post('/', function (req, res) {
   delete _viewData.success
   delete _viewData.error

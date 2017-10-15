@@ -5,12 +5,17 @@
 MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
 This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. This project is built in Node.js, Express and EJS template engine.
 
+-------------
+
 # Deployed at
 
 https://blooming-fjord-52237.herokuapp.com
 
+-------------
+
 # Dependencies
 NPM - Minimum: 5.4.2
+
 Node - Minimum: v8.1.2
 
 MongoDB
@@ -20,6 +25,7 @@ Install mongoDB locally and run with command:
 $ mongod
 
 ```
+-------------
 
 # Installation
 
@@ -32,6 +38,7 @@ $ npm install
 ```
 
 -------------
+
 # Start the App
 
 ```
@@ -43,7 +50,9 @@ OR
 $ nodemon index.js
 ```
 
-#API Docs
+-------------
+
+# API Docs
 
 ### Register User [POST] (/api/user/register/)
 + Request
@@ -71,12 +80,12 @@ $ nodemon index.js
         "email":"john@example.com",
     }
 
-### Get user detail [GET] (/api/user/myaccount/)
+### Get user detail [GET] (/api/user/USER ID)
 + Request
     + Headers
       Authorization : USER TOKEN
 
-### Update user detail [PUT] (/api/user/myaccount/USER ID)
+### Update user detail [PUT] (/api/user/USER ID)
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -87,21 +96,11 @@ $ nodemon index.js
         "email":"john12@example.com"
     }    
 
-### Delete user account [DELETE] (/api/user/myaccount/USER ID)
+### Delete user account [DELETE] (/api/user/USER ID)
 + Request
     + Headers
       Authorization : USER TOKEN
-
-### Get all posts [GET] (/api/post/all/)
-+ Request
-    + Headers
-      Authorization : USER TOKEN
-
-### Get a user's posts [GET] (/api/post/user/USER ID)
-+ Request
-    + Headers
-      Authorization : USER TOKEN
-      
+  
 ### Add new post [POST] (/api/post/create/)
 + Request
     + Headers
@@ -112,7 +111,7 @@ $ nodemon index.js
       "content": "testing content"
     }
 
-### Get post detail [GET] (/api/post/detail/POST ID)
+### Get post detail [GET] (/api/post/POST ID)
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -133,6 +132,16 @@ $ nodemon index.js
     + Headers
       Authorization : USER TOKEN
 
+### Get all posts [GET] (/api/post/all/)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+
+### Get a user's posts [GET] (/api/post/user/USER ID)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+    
 
 # Coding Rules
 1. Declare variables as 'const' for variables that should not change and 'let' for the ones that can change
@@ -150,4 +159,4 @@ $ nodemon index.js
 13. Password must be encrypted
 14. Precautions for concurrent saves
 15. Precautions for sql injection
-16. Add ajax requests on necessary pages which have dynamic content such as post listing, search posts, delete posts
+16. Add ajax requests on necessary pages which display dynamic content such as post listing, search posts, delete posts

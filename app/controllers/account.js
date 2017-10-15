@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
 });
 
 /** [POST] route for /myaccount 
- * Update user data
+ * Call API to update user data
 */
 router.post('/', function (req, res) {
   //create template variable
@@ -37,6 +37,7 @@ router.post('/', function (req, res) {
   delete data.success
   delete data.error
   
+  /** call api to maintain clean separation between layers */
   //call user account update API to update changes
   request.put({
     url   : config.apiUrl + uri.api.link.user_account + userId,
