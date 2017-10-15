@@ -148,6 +148,8 @@ function update(_id, userId, postParam) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 
       post.toArray(function(err, postList) {
+        /** check if array is not empty */
+        if(!postList.length) { deferred.reject(i18n.__('invalid_entry') ); return  deferred.promise; }
         
         /** check version of post */
         if(postList[0].version != postParam.version) { deferred.reject(i18n.__('invalid_version') ); return  deferred.promise; }

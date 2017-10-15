@@ -12,6 +12,7 @@
 	"own_account_delete": "You can only delete your own account",
 	"account_deleted": "Account deleted successfully.",
 	"invalid_version": "Invalid version",
+	"invalid_entry": "Invalid entry",
 	"no_account": "Account does not exist",
 	"post_deleted": "Post deleted",
 	"email_already_exist": "Email %s is already taken",
