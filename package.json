@@ -24,7 +24,8 @@
     "q": "^1.4.1",
     "request": "^2.58.0",
     "rootpath": "^0.1.2",
-    "sendmail": "^1.2.0"
+    "sendmail": "^1.2.0",
+    "serve-favicon": "^2.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",

@@ -147,7 +147,7 @@ function resetPassword(req, res){
         .getByEmail(req.body.email)
         .then( function(user) {
           if (user) {
-            // authentication successful, return token
+            // authentication successful, generate new password
               sendmail({
                 from    : config.email_from,
                 to      : req.body.email,

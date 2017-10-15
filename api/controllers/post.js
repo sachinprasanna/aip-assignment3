@@ -14,8 +14,8 @@ const i18n        = require("i18n");
 /* routes for post api controller */
 router.post(uri.api.route.post_create,          createPost);
 router.get(uri.api.route.post_detail + '/:id',  getUserPostById);
-router.post(uri.api.route.post_edit  + '/:id',   updateUserPostById);
-router.get(uri.api.route.post_user   + '/:id',    getUserPosts);
+router.post(uri.api.route.post_edit  + '/:id',  updateUserPostById);
+router.get(uri.api.route.post_user   + '/:id',  getUserPosts);
 router.get(uri.api.route.all_posts,             getAllPosts);
 
 // Export default for router

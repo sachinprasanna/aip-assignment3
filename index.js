@@ -5,6 +5,7 @@ const passport          = require('passport');
 const expressValidator  = require('express-validator');
 const session           = require('express-session');
 const path              = require('path');
+const favicon           = require('serve-favicon');
 const config            = require('config/config');
 const port              = process.env.PORT || config.port;
 const i18n              = require("i18n");
@@ -31,6 +32,7 @@ i18n.setLocale(config.lang);
 
 /** add static files */
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 /** api routes */
 app.use('/api', require('./api/router'));

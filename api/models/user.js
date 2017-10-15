@@ -9,6 +9,9 @@ const mongo   = require('mongoskin');
 const db      = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
 db.bind('users'); /** users table */
 
+/** set "email" field as unique index */
+db.users.createIndex( { "email": 1 }, { unique: true } )
+
 const service = {};
 
 service.authenticate  = authenticate;

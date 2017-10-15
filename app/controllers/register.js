@@ -10,15 +10,19 @@ let _viewData = { uri: uri };
 router.get('/', function (req, res) {
   /** log user out */
   delete req.session.token;
+  delete _viewData.success
+  delete _viewData.error
 
   /** move success message into local variable so it only appears once (single read) */
   _viewData.success = req.session.success;
-  delete req.session.success;
-
+  
   res.render('register', _viewData);
 });
 
 router.post('/', function (req, res) {
+  delete _viewData.success
+  delete _viewData.error
+  
   /** authenticate using api to maintain clean separation between layers */
   request.post({
     url : config.apiUrl + uri.api.link.register,

@@ -79,7 +79,7 @@ router.get('/edit/:id', function (req, res) {
       return res.redirect('/');
     }
 
-    /** if not post exists, redirect to home */
+    /** if post is not valid, redirect to home */
     if(!body.response) return res.redirect('/');
 
     _viewData.post = body.response;
@@ -105,6 +105,9 @@ router.post('/edit/:id', function (req, res) {
       return res.render('post_editor', _viewData);
     }
 
+    /** if post is not valid, redirect to home */
+    if(!body.response) return res.redirect('/');
+    
     _viewData.success = body.response;
     _viewData.post    = body.result;
     return res.render('post_editor', _viewData);
