@@ -1,9 +1,13 @@
-﻿const express = require('express');
+﻿/*
+Controller for forgot password routes
+*/
+const express = require('express');
 const router  = express.Router();
 const request = require('request');
 const config  = require('config/config');
 const uri     = require('config/uri');
 
+//declare _viewData variable to pass to view and initialize with uri variables
 let _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
