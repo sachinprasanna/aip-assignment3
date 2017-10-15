@@ -1,10 +1,15 @@
 ﻿/*
 Post controller for
   - Creating new post
-
+  - Display post
+  - Update post
+  - Creating new post
+  - Get all user posts
+  - Get all posts
+  - Delete post
 */
 
-/* imports for express router, database for users and passport */
+/* imports for express router, database for posts and passport */
 const express     = require("express");
 const router      = express.Router();
 const postService = require("api/models/post");
@@ -14,7 +19,7 @@ const i18n        = require("i18n");
 /* routes for post api controller */
 router.post(uri.api.route.post_create,          createPost);
 router.get(uri.api.route.post_detail + '/:id',  getUserPostById);
-router.put(uri.api.route.post_edit  + '/:id',  updateUserPostById);
+router.put(uri.api.route.post_edit  + '/:id',   updateUserPostById);
 router.get(uri.api.route.post_user   + '/:id',  getUserPosts);
 router.get(uri.api.route.all_posts,             getAllPosts);
 router.delete('/:id',                           deleteUserPosts);
@@ -30,7 +35,7 @@ create a new post
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error or success message
 
 */
 function createPost(req, res) {
@@ -50,7 +55,6 @@ function createPost(req, res) {
           msg         += errorArray[i].msg + ".";
       }
       res.send({ status: 0, response: msg });
-      //util.inspect(errors.array())
       return;
     }
 
@@ -62,30 +66,52 @@ function createPost(req, res) {
       .create(postParam)
       .then( function() {
         // post added in DB
-        res.send({ status: 1, response: i18n.__('post_added') });
+        return res.send({ status: 1, response: i18n.__('post_added') });
       })
       .catch( function(err) {
-        res.send({ status: 0, response: err });
+        return res.send({ status: 0, response: err });
       });
   });
 }
 
+/*
+@method getUserPostById
+
+get post detail only for owner
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error message or post data
+
+*/
 function getUserPostById(req, res) {
   const postId = req.params.id;
   const userId = req.user._id;
+
+  //get post detail only for owner 
   postService
     .getUserPost(postId, userId)
     .then( function(posts) {
       posts.toArray( function(err, postList) {
-        res.send({ status: 1, response: postList[0] });
+        return res.send({ status: 1, response: postList[0] });
       });
     })
     .catch( function(err) {
       // return error
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }
 
+/*
+@method updateUserPostById
+
+update post detail only by owner
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error message or post data
+
+*/
 function updateUserPostById(req, res) {
   const postId = req.params.id;
   const userId = req.user._id;
@@ -98,7 +124,6 @@ function updateUserPostById(req, res) {
   req.getValidationResult().then( function(errors) {
     //throw error, if any
     if (!errors.isEmpty()) {
-      //util.inspect(errors.array())
       let errorArray  = errors.array();
       let msg         = '';
       for (i = 0; i < errorArray.length; i++) { 
@@ -115,42 +140,75 @@ function updateUserPostById(req, res) {
       .update(postId, userId, postParam)
       .then( function(post) {
         // post added in DB
-        res.send({ status: 1, response: i18n.__('post_updated'), result: post });
+        return res.send({ status: 1, response: i18n.__('post_updated'), result: post });
       })
       .catch( function(err) {
-        res.send({ status: 0, response: err });
+        return res.send({ status: 0, response: err });
       });
   });
 }
 
+/*
+@method getUserPosts
+
+get all user's posts
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error message or posts
+
+*/
 function getUserPosts(req, res) {
   const userId = req.params.id;
+
+  // get user's posts from DB
   postService
     .getUserPosts(userId)
     .then( function(posts) {
       posts.toArray( function(err, postList) {
-        res.send({ status: 1, response: postList });
+        return res.send({ status: 1, response: postList });
       });
     })
     .catch( function(err) {
       // return error
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }
 
+/*
+@method getAllPosts
+
+get all posts
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error message or posts
+
+*/
 function getAllPosts(req, res) {
+
+  //get all posts from DB
   postService
     .getAllPosts(req.query.q)
     .then( function(posts) {
-      res.send({ status: 1, response: posts });
+      return res.send({ status: 1, response: posts });
     })
     .catch( function(err) {
       // return error
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }
 
-//
+/*
+@method deleteUserPosts
+
+delete post only by owner
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error message
+
+*/
 function deleteUserPosts(req, res) {
   const postId = req.params.id;
   const userId = req.user._id;
@@ -159,9 +217,9 @@ function deleteUserPosts(req, res) {
     .delete(postId, userId)
     .then( function() {
       // deletion successful
-      res.send({ status: 1 });
+      return res.send({ status: 1 });
     })
     .catch( function(err) {
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }

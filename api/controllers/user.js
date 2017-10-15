@@ -1,8 +1,10 @@
 ﻿/*
 User controller for
-  - Account details
   - Authenticating user
   - Registering user
+  - Resetting user password
+  - Sending new password via email
+  - User Account details
   - Updating user details
   - Deleting user
 
@@ -36,7 +38,7 @@ authenticate user for login, return token if user valid
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error message or valid user token
 
 */
 function authenticateUser(req, res) {
@@ -54,7 +56,7 @@ function authenticateUser(req, res) {
       for (i = 0; i < errorArray.length; i++) { 
           msg         += errorArray[i].msg + ".";
       }
-      res.send({ status: 0, response: msg });
+      return res.send({ status: 0, response: msg });
     } else { 
 
       //check for valid user in DB
@@ -63,20 +65,20 @@ function authenticateUser(req, res) {
         .then( function(user) {
           if (user) {
             // authentication successful, return token
-            res.send({ status: 1, response: user });
+            return res.send({ status: 1, response: user });
           } else {
             // authentication failed
-            res.send({ status: 0, response: i18n.__('incorrect_credentials') });
+            return res.send({ status: 0, response: i18n.__('incorrect_credentials') });
           }
         })
         // catch error if anything other than authentication error
         .catch( function(err) {
-          res.send({ status: 0, response: err });
+          return res.send({ status: 0, response: err });
         });
     }
   })
   .catch( function(err) {
-    res.send({ status: 0, response: i18n.__('unexpected_error') });
+    return res.send({ status: 0, response: i18n.__('unexpected_error') });
   });
 }
 
@@ -87,7 +89,7 @@ register a new user
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error or success message
 
 */
 function registerUser(req, res) {
@@ -117,14 +119,24 @@ function registerUser(req, res) {
       .create(req.body)
       .then( function() {
         // User successfully registered
-        res.send({ status: 1, response: i18n.__('user_registered') });
+        return res.send({ status: 1, response: i18n.__('user_registered') });
       })
       .catch( function(err) {
-        res.send({ status: 0, response: err });
+        return res.send({ status: 0, response: err });
       });
   });
 }
 
+/*
+@method resetPassword
+
+reset password for a user and send via email
+
+@param req - request from frontend
+@param res - result to frontend
+@return    - status (0,1), error or success message
+
+*/
 function resetPassword(req, res){ 
   // validate the input
   req.checkBody("email",      i18n.__('email_required')).notEmpty();
@@ -139,7 +151,7 @@ function resetPassword(req, res){
       for (i = 0; i < errorArray.length; i++) { 
           msg         += errorArray[i].msg + ".";
       }
-      res.send({ status: 0, response: msg });
+      return res.send({ status: 0, response: msg });
     } else { 
 
       //check for valid user in DB
@@ -159,68 +171,71 @@ function resetPassword(req, res){
               emailNewPasswordToUser(res, req.body.email, newPassword);
             })
             .catch( function(err) {
-              res.send({ status: 0, response: err });
+              return res.send({ status: 0, response: err });
             });
             
           } else {
             // authentication failed
-            res.send({ status: 0, response: i18n.__('no_account') });
+            return res.send({ status: 0, response: i18n.__('no_account') });
           }
         })
         // catch error if anything other than authentication error
         .catch( function(err) {
-          res.send({ status: 0, response: err });
+          return res.send({ status: 0, response: err });
         });
     }
   })
   .catch( function(err) {
-    res.send({ status: 0, response: i18n.__('unexpected_error') });
+    return res.send({ status: 0, response: i18n.__('unexpected_error') });
   });
 }
 
 /*
-@method getCurrentUser
+@method getUser
 
 get user's info
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error message or user object
 
 */
 function getUser(req, res) {
   const userId = req.user._id;
+
+  //get valid user from DB using user ID
   userService
     .getById(userId)
     .then( function(user) {
       if (user) {
         // result should return the user
-        res.send({ status: 1, response: user });
+        return res.send({ status: 1, response: user });
       } else {
         // user not found
-        res.send({ status: 0, response: i18n.__('no_user') });
+        return res.send({ status: 0, response: i18n.__('no_user') });
       }
     })
     .catch( function(err) {
       // return error
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }
 
 /*
-@method updateUser
+@method updateCurrentUser
 
 update user's info
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error or (success message and user object)
 
 */
 function updateCurrentUser(req, res) {
   const userId = req.params._id;
+
+  // user can only update own account
   if (req.user._id != userId) {
-    // can only update own account
     return res.send({ status: 0, response: i18n.__('own_account_restriction') });
   }
 
@@ -249,11 +264,11 @@ function updateCurrentUser(req, res) {
       .update(userId, req.body)
       .then( function() {
         // user account updated successfully
-        res.send({ status: 1, response: i18n.__('account_updated') , user: req.body});
+        return res.send({ status: 1, response: i18n.__('account_updated') , user: req.body});
       })
       .catch( function(err) {
         // catch error
-        res.send({ status: 0, response: err });
+        return res.send({ status: 0, response: err });
       });
   });
 }
@@ -265,27 +280,40 @@ delete user's account
 
 @param req - request from frontend
 @param res - result to frontend
-@return    - null
+@return    - status (0,1), error or success message
 
 */
 function deleteCurrentUser(req, res) {
   const userId = req.params._id;
+  
+  // can only delete own account
   if (req.user._id != userId) {
-    // can only delete own account
-    res.send({ status: 0, response: i18n.__('own_account_delete') });
+    return res.send({ status: 0, response: i18n.__('own_account_delete') });
   }
 
+  //delete user account from DB
   userService
     .delete(userId)
     .then( function() {
       // deletion successful
-      res.send({ status: 1, response: i18n.__('account_deleted') });
+      return res.send({ status: 1, response: i18n.__('account_deleted') });
     })
     .catch( function(err) {
-      res.send({ status: 0, response: err });
+      return res.send({ status: 0, response: err });
     });
 }
 
+/*
+@method emailNewPasswordToUser
+
+delete user's account
+
+@param res         - result to frontend
+@param email       - send email to
+@param newPassword - new password to email
+@return            - null
+
+*/
 function emailNewPasswordToUser(res, email, newPassword){
   //send email
   sendmail({

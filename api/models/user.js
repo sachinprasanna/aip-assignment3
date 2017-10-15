@@ -1,4 +1,14 @@
 ﻿/** File used to interact with DB (Mongo DB) */
+/*
+User model for
+  - Creating new user
+  - Authenticating user
+  - Get user by id
+  - Get user by email
+  - Update user
+  - Delete user
+  - Update user's password
+*/
 const config  = require('config/config');
 const _       = require('lodash');
 const i18n    = require("i18n");
@@ -14,6 +24,7 @@ db.users.createIndex( { "email": 1 }, { unique: true } )
 
 const service = {};
 
+/* services for user model */
 service.authenticate  = authenticate;
 service.getById       = getById;
 service.getByEmail    = getByEmail;
@@ -24,7 +35,15 @@ service.resetUserPassword = updateUserPassword;
 
 module.exports        = service;
 
-/** authenticate user */
+/*
+@method authenticate
+
+authenticate user
+
+@param email - user's email
+@param password - user's password
+@return user session token and user data
+*/
 function authenticate(email, password) {
   let deferred = Q.defer();
 
@@ -58,7 +77,14 @@ function authenticate(email, password) {
   return deferred.promise;
 }
 
-/** get user by id */
+/*
+@method getById
+
+get user by id
+
+@param _id - user id
+@return user data
+*/
 function getById(_id) {
   let deferred = Q.defer(); //save promise
 
@@ -67,6 +93,7 @@ function getById(_id) {
     if (err) deferred.reject(err.name + ': ' + err.message);
 
     if (user) {
+      /** return user data without password/hash string */
       deferred.resolve(_.omit(user, 'hash'));
     } else {
       /** user not found */
@@ -77,6 +104,14 @@ function getById(_id) {
   return deferred.promise;
 }
 
+/*
+@method getByEmail
+
+get user by meail
+
+@param email - user's email
+@return user data
+*/
 function getByEmail(email){
   let deferred = Q.defer(); //save promise
 
@@ -97,11 +132,18 @@ function getByEmail(email){
   return deferred.promise;
 }
 
-/** create new user */
+/*
+@method create
+
+create new user
+
+@param userParam - user data
+
+*/
 function create(userParam) {
   let deferred = Q.defer();
 
-  /** validate user */
+  /** check if email id does not already exists */
   db.users.findOne(
     { email: userParam.email },
     function (err, user) {
@@ -143,7 +185,15 @@ function create(userParam) {
   return deferred.promise;
 }
 
-/** insert in table */
+/*
+@method update
+
+update user
+
+@param _id       - user ID
+@param userParam - user data
+
+*/
 function update(_id, userParam) {
   let deferred = Q.defer();
 
@@ -199,6 +249,15 @@ function update(_id, userParam) {
   return deferred.promise;
 }
 
+/*
+@method updateUserPassword
+
+update user's password
+
+@param _id       - user ID
+@param password  - new password
+
+*/
 function updateUserPassword(_id, password){
   let deferred = Q.defer();
   let set = {};
@@ -219,7 +278,14 @@ function updateUserPassword(_id, password){
   return deferred.promise;
 }
 
-/** delete user account */
+/*
+@method _delete
+
+delete user account
+
+@param _id  - user ID
+
+*/
 function _delete(_id) {
   let deferred = Q.defer();
 

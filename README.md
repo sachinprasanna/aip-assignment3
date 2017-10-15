@@ -149,3 +149,5 @@ $ nodemon index.js
 12. Explanatory comments at the top of every file and also on every method
 13. Password must be encrypted
 14. Precautions for concurrent saves
+15. Precautions for sql injection
+16. Add ajax requests on necessary pages which have dynamic content such as post listing, search posts, delete posts
