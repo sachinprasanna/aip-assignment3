@@ -11,24 +11,10 @@ let _viewData = { uri: uri };
 router.get('/', function (req, res) {
   delete _viewData.success
   delete _viewData.error
-  let searchParam = '';
-  if(req.query.q){
-    searchParam = '?q=' + req.query.q;
-  }
-  request.get({
-    url     : config.apiUrl + uri.api.link.all_posts + searchParam,
-    headers : {'Authorization': req.session.token},
-    json    : true
-  }, function (error, response, body) {
-    if (body.status == 0) {
-      return res.redirect('/login');
-    }
-
-    _viewData.posts         = body.response;
-    _viewData.posts.content = nl2br(body.response.content);
-    _viewData.q             = req.query.q;
-     return res.render('post_list', _viewData);
-  });
+  
+  _viewData.apiUrl = config.apiUrl + uri.api.link.all_posts;
+  _viewData.token  = req.session.token;
+   return res.render('post_list', _viewData);
 });
 
 router.get('/create', function (req, res) {
@@ -128,6 +114,7 @@ router.get('/myposts', function (req, res) {
       return res.redirect('/');
     }
 
+    _viewData.baseurl = config.apiUrl;
     _viewData.token = req.session.token;
     _viewData.posts = body.response;
      return res.render('my_post_list', _viewData);

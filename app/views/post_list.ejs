@@ -12,9 +12,9 @@
             </div>
             <% } %>
 
-              <form class="navbar-form searchForm" role="search">
+              <form class="navbar-form searchForm" role="search" id="searchForm">
                 <div class="input-group add-on">
-                  <input class="form-control" placeholder="<%= __('search_word') %>" name="q" id="q" type="text" minlength="5" value="<%= locals.q || '' %>"
+                  <input class="form-control" placeholder="<%= __('search_word') %>" name="q" id="qsearch" type="text" minlength="5" value="<%= locals.q || '' %>"
                   />
                   <div class="input-group-btn">
                     <button class="btn btn-default" type="submit">
@@ -23,31 +23,72 @@
                   </div>
                 </div>
               </form>
+
               <!-- Post Container  -->
               <br/>
               <br/>
-              <% if(!posts.length) { %>
-                <div class="alert alert-danger">
-                  <%= __('no_result') %>
-                </div>
-                <% } %>
-                  <% for(var i=0; i < posts.length; i++) {%>
-                    <div class="text-center singlepost">
-                      <h3>
-                        <%- posts[i].title %>
-                      </h3>
-                      <p>
-                        <em>
-                          <%= __('by') %>:
-                            <%= posts[i].userFirstName %>
-                              <%= posts[i].userLastName %>
-                        </em>
-                      </p>
-                      <p class="textcontent">
-                        <%- (posts[i].content).replace(/\r\n/g, '<br/>')  %>
-                      </p>
-                    </div>
-                    <% } %>
 
+              <div id="mainContainer"></div>
     </div>
+
+    <script>
+      //function to load posts on page by calling api
+      function loadPosts(searchParam) {
+        let apiUrl = "<%= apiUrl %>";
+        if (searchParam.length) {
+          apiUrl += '?q=' + searchParam;
+        }
+
+        //call api to get all posts
+        jQuery.ajax({
+          type: 'GET',
+          headers: { 'Authorization': "<%= token %>" },
+          contentType: 'application/json',
+          url: apiUrl,
+          success: function (data) {
+
+            //redirect to login page if error occurs
+            if (data.status == 0) {
+              window.location.href = '/login';
+              return;
+            }
+
+            let posts = data.response;
+            //no result found, display message
+            if (!posts.length) {
+              jQuery('#mainContainer').html("<div class='alert alert-danger'><%= __('no_result') %></div>");
+              return;
+            }
+
+            // load posts
+            let postHtml = '';
+            for (var i = 0; i < posts.length; i++) {
+              postHtml += "<div class='text-center singlepost'>\
+                        <h3>" + posts[i].title + "</h3>\
+                      <p>\
+                        <em><%= __('by') %>: " + posts[i].userFirstName + " " + posts[i].userLastName + "</em>\
+                      </p>\
+                      <p class='textcontent'>\
+                          " + (posts[i].content).replace(/\r\n/g, '<br/>') + "\
+                      </p>\
+                    </div>";
+            }
+
+            jQuery('#mainContainer').html(postHtml);
+          }
+        });
+      }
+
+      //on page load
+      jQuery(document).ready(function () {
+        loadPosts('');
+
+        jQuery('#searchForm').submit(function (e) {
+          e.preventDefault(); //prevent default submit action
+
+          let searchVal = jQuery('#qsearch').val();
+          loadPosts(searchVal);
+        })
+      });
+    </script>
     <%- include('partials/footer') %>

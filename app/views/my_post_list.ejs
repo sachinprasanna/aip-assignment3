@@ -48,13 +48,17 @@
 
 
     <script>
+      //function to delete a post
       function deletePost(post) {
+        let apiUrl = "<%= baseurl %><%= uri.api.link.delete_post %>";
         let postId = jQuery(post).attr('id');
+
+        //call api to delete post
         jQuery.ajax({
           type: 'DELETE',
           headers: { 'Authorization': "<%= token %>" },
           contentType: 'application/json',
-          url: 'http://localhost:5000/api/post/' + postId,
+          url: apiUrl + postId,
           success: function (data) {
             if (data.status == 1) {
               jQuery('#row-' + postId).remove();

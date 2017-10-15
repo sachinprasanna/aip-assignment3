@@ -5,7 +5,13 @@
 MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
 This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. This project is built in Node.js, Express and EJS template engine.
 
+# Deployed at
+
+https://blooming-fjord-52237.herokuapp.com
+
 # Dependencies
+NPM - Minimum: 5.4.2
+Node - Minimum: v8.1.2
 
 MongoDB
 
@@ -38,8 +44,6 @@ $ nodemon index.js
 ```
 
 #API Docs
-
-**NOTE:** API Url: http://localhost:8000/
 
 ### Register User [POST] (/api/user/register/)
 + Request
@@ -130,7 +134,7 @@ $ nodemon index.js
       Authorization : USER TOKEN
 
 
-# Rules
+# Coding Rules
 1. Declare variables as 'const' for variables that should not change and 'let' for the ones that can change
 2. Indentation should be 2 spaces
 3. Do not use static message strings. Use a language file to store message strings.

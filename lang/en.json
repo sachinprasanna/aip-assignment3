@@ -55,7 +55,7 @@
 	"delete": "Delete",
 	"search_word": "Search by word",
 	"change_password": "Change Password",
-	"no_result": "No results found.",
+	"no_result": "No posts found.",
 	"post": "Post",
 	"send_new_pwd": "Send New Password"
 }

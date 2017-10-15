@@ -23,7 +23,7 @@ module.exports = {
       "create_post"       : "/post/create/",
       "get_post"          : "/post/detail/",
       "edit_post"         : "/post/edit/",
-      "delete_post"       : "/post/detail/"
+      "delete_post"       : "/post/"
     }
   },
   "app":{
