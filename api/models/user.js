@@ -20,6 +20,7 @@ service.getByEmail    = getByEmail;
 service.create        = create;
 service.update        = update;
 service.delete        = _delete;
+service.resetUserPassword = updateUserPassword;
 
 module.exports        = service;
 
@@ -195,6 +196,26 @@ function update(_id, userParam) {
       });
   }
 
+  return deferred.promise;
+}
+
+function updateUserPassword(_id, password){
+  let deferred = Q.defer();
+  let set = {};
+
+  /** encrypt password */
+  set.hash = bcrypt.hashSync(password, 10);
+
+  /** update in table */
+  db.users.update(
+    { _id: mongo.helper.toObjectID(_id) },
+    { $set: set },
+    function (err, doc) {
+      if (err) deferred.reject(err.name + ': ' + err.message);
+
+      deferred.resolve();
+    });
+  
   return deferred.promise;
 }
 

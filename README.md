@@ -45,6 +45,14 @@ $ npm start
         "password":"111"
     }
     
+    
+### Reset password of User [POST] (/api/user/resetpwd/)
++ Request
+    + Body (application/json)
+    {
+        "email":"john@example.com",
+    }
+
 ### Get user detail [GET] (/api/user/myaccount/)
 + Request
     + Headers

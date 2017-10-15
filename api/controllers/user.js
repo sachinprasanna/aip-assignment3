@@ -125,7 +125,7 @@ function registerUser(req, res) {
   });
 }
 
-function resetPassword(req, res){
+function resetPassword(req, res){ 
   // validate the input
   req.checkBody("email",      i18n.__('email_required')).notEmpty();
   req.checkBody("email",      i18n.__('invalid_email')).isEmail();
@@ -148,17 +148,23 @@ function resetPassword(req, res){
         .then( function(user) {
           if (user) {
             // authentication successful, generate new password
-              sendmail({
-                from    : config.email_from,
-                to      : req.body.email,
-                subject : i18n.__('reset_password'),
-                html    : '<a href="' + config.appUrl + uri.api.link.resetpwd + '" target="_blank">' + i18n.__('click_to_reset') + '</a>',
-              }, function(err, reply) {
-                res.end( i18n.__('password_sent') );
+            let newPassword = Math.random().toString(36).substring(2);
+
+            //update new password in user account
+            userService
+            .resetUserPassword(user._id, newPassword)
+            .then( function() {
+
+              //send new password to the user via email
+              emailNewPasswordToUser(res, req.body.email, newPassword);
+            })
+            .catch( function(err) {
+              res.send({ status: 0, response: err });
             });
+            
           } else {
             // authentication failed
-            res.send({ status: 0, response: "Account does not exist" });
+            res.send({ status: 0, response: i18n.__('no_account') });
           }
         })
         // catch error if anything other than authentication error
@@ -278,4 +284,16 @@ function deleteCurrentUser(req, res) {
     .catch( function(err) {
       res.send({ status: 0, response: err });
     });
+}
+
+function emailNewPasswordToUser(res, email, newPassword){
+  //send email
+  sendmail({
+      from    : config.email_from,
+      to      : email,
+      subject : i18n.__('app_name') + '-' + i18n.__('reset_password_subject'),
+      html    : i18n.__('new_password_email_text') + newPassword,
+    }, function(err, reply) {
+      res.end(i18n.__('password_sent'));
+  });
 }

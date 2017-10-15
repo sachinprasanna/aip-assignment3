@@ -7,13 +7,8 @@ const uri     = require('config/uri');
 let _viewData = { uri: uri };
 
 router.get('/', function (req, res) {
-  /** log user out */
-  delete req.session.user;
   delete _viewData.success
   delete _viewData.error
-
-  /** move success message into local variable so it only appears once (single read) */
-  _viewData.success = req.session.success;
 
   res.render('forgot_pwd', _viewData);
 });
@@ -21,6 +16,7 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   delete _viewData.success
   delete _viewData.error
+  delete _viewData.email
   
   /** authenticate using api to maintain clean separation between layers */
   request.post({
@@ -28,9 +24,14 @@ router.post('/', function (req, res) {
     form: req.body,
     json: true
   }, function (error, response, body) {
-    
+      if(typeof body === 'object' && body.status == 0){
+        _viewData.error = body.response;
+        _viewData.email = req.body.email;
+        return res.render('forgot_pwd', _viewData);
+      }
+      
       _viewData.success = body;
-      res.render('forgot_pwd', _viewData);
+      return res.render('forgot_pwd', _viewData);
   });
 });
 
