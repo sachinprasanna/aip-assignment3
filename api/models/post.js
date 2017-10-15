@@ -1,10 +1,13 @@
 ﻿/** File used to interact with DB (Mongo DB) */
-const config  = require('config/config');
-const _       = require('lodash');
-const i18n    = require("i18n");
-const Q       = require('q');
-const mongo   = require('mongoskin');
-const db      = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const config    = require('config/config');
+const _         = require('lodash');
+const Entities  = require('html-entities').AllHtmlEntities;
+const i18n      = require("i18n");
+const Q         = require('q');
+const mongo     = require('mongoskin');
+const db        = mongo.db(process.env.MONGOLAB_URI || config.connectionString, { native_parser: true }); // use mongo db
+const entities  = new Entities();
+
 db.bind('posts'); //posts table
 
 /** set index on fields to make them searchable  */
@@ -27,13 +30,17 @@ service.getAllPosts   = getAllPosts;
 module.exports        = service;
 
 /** create new post */
+/**
+ * @param  {} post
+ */
 function create(post) {
+
   let deferred = Q.defer();
   
   /** fields to add */
   let collectionData = {
-    title   : post.title,
-    content : post.content,
+    title   : entities.encode(post.title),
+    content : entities.encode(post.content),
     userId  : post.userId,
     version : 1,
     createdAt: new Date()
@@ -107,8 +114,8 @@ function update(_id, userId, postParam) {
         
         /** fields to update */
         let set = {
-          title   : postParam.title,
-          content : postParam.content,
+          title   : entities.encode(postParam.title),
+          content : entities.encode(postParam.content),
           version : ++postList[0].version
         };
         
