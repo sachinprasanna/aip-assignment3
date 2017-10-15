@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
   let data    = _viewData;
-  let userId  = req.session.user.id;
+  const userId  = req.session.user.id;
   delete data.success
   delete data.error
   

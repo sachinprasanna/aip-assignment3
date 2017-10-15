@@ -42,7 +42,7 @@ router.get('/create', function (req, res) {
 });
 
 router.post('/create', function (req, res) {
-  let userId    = req.session.user.id;
+  const userId    = req.session.user.id;
   let postParam = req.body;
   let data      = _viewData;
   delete data.error
@@ -68,7 +68,7 @@ router.post('/create', function (req, res) {
 router.get('/edit/:id', function (req, res) { 
   delete _viewData.error
   delete _viewData.success
-  let postId = req.params.id;
+  const postId = req.params.id;
 
   request.get({
     url     : config.apiUrl + uri.api.link.get_post + postId,
@@ -90,8 +90,8 @@ router.get('/edit/:id', function (req, res) {
 router.post('/edit/:id', function (req, res) {
   delete _viewData.error
   delete _viewData.success
-  let postId    = req.params.id;
-  let userId    = req.session.user.id;
+  const postId    = req.params.id;
+  const userId    = req.session.user.id;
   let postParam = req.body;
 
   request.post({
@@ -117,7 +117,7 @@ router.post('/edit/:id', function (req, res) {
 router.get('/myposts', function (req, res) {
   delete _viewData.error
   delete _viewData.success
-  let userId = req.session.user.id;
+  const userId = req.session.user.id;
 
   request.get({
     url     : config.apiUrl + uri.api.link.user_post + userId,

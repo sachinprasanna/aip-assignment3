@@ -33,7 +33,7 @@ create a new post
 
 */
 function createPost(req, res) {
-  let userId = req.user._id;
+  const userId = req.user._id;
 
   // validate the input
   req.checkBody("title",    i18n.__('title_required')).notEmpty();
@@ -70,8 +70,8 @@ function createPost(req, res) {
 }
 
 function getUserPostById(req, res) {
-  let postId = req.params.id;
-  let userId = req.user._id;
+  const postId = req.params.id;
+  const userId = req.user._id;
   postService
     .getUserPost(postId, userId)
     .then( function(posts) {
@@ -86,8 +86,8 @@ function getUserPostById(req, res) {
 }
 
 function updateUserPostById(req, res) {
-  let postId = req.params.id;
-  let userId = req.user._id;
+  const postId = req.params.id;
+  const userId = req.user._id;
 
   // validate the input
   req.checkBody("title",    i18n.__('title_required')).notEmpty();
@@ -123,7 +123,7 @@ function updateUserPostById(req, res) {
 }
 
 function getUserPosts(req, res) {
-  let userId = req.params.id;
+  const userId = req.params.id;
   postService
     .getUserPosts(userId)
     .then( function(posts) {

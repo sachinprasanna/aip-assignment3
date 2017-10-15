@@ -183,7 +183,7 @@ get user's info
 
 */
 function getUser(req, res) {
-  let userId = req.user._id;
+  const userId = req.user._id;
   userService
     .getById(userId)
     .then( function(user) {
@@ -212,7 +212,7 @@ update user's info
 
 */
 function updateCurrentUser(req, res) {
-  let userId = req.params._id;
+  const userId = req.params._id;
   if (req.user._id != userId) {
     // can only update own account
     return res.send({ status: 0, response: i18n.__('own_account_restriction') });
@@ -263,7 +263,7 @@ delete user's account
 
 */
 function deleteCurrentUser(req, res) {
-  let userId = req.params._id;
+  const userId = req.params._id;
   if (req.user._id != userId) {
     // can only delete own account
     res.send({ status: 0, response: i18n.__('own_account_delete') });
