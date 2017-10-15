@@ -5,6 +5,16 @@
 MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
 This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. This project is built in Node.js, Express and EJS template engine.
 
+# Dependencies
+
+MongoDB
+
+```
+Install mongoDB locally and run with command:
+$ mongod
+
+```
+
 # Installation
 
 Run the following command to run the code:
@@ -21,6 +31,10 @@ $ npm install
 ```
 # In terminal
 $ npm start
+
+OR
+
+$ nodemon index.js
 ```
 
 #API Docs
@@ -99,7 +113,7 @@ $ npm start
     + Headers
       Authorization : USER TOKEN
  
-### Edit a post [POST] (/api/post/edit/POST ID)
+### Edit a post [PUT] (/api/post/POST ID)
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -109,3 +123,25 @@ $ npm start
       "content": "testing content",
       "version": 1
     }
+
+### Delete a post [DELETE] (/api/post/POST ID)
++ Request
+    + Headers
+      Authorization : USER TOKEN
+
+
+# Rules
+1. Declare variables as 'const' for variables that should not change and 'let' for the ones that can change
+2. Indentation should be 2 spaces
+3. Do not use static message strings. Use a language file to store message strings.
+4. Encode html entities while storing in db to prevent script injection
+5. Curly brackets of a function start in same line and end in new line
+6. Pass number - 0, 1 as a status for API responses. 0 being an error and 1 is success.
+7. API or route names to be stored in separate file to keep record
+8. Use camelcase for function names and uris
+9. Use underscore for filenames and language variables
+10. Do not repeat code
+11. Code should be readable
+12. Explanatory comments at the top of every file and also on every method
+13. Password must be encrypted
+14. Precautions for concurrent saves

@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                   <% for(var i=0; i < posts.length; i++) {%>
-                    <tr>
+                    <tr id="row-<%= posts[i]._id %>">
                       <td>
                         <%- posts[i].title %>
                       </td>
@@ -36,10 +36,31 @@
                         <a href="<%= uri.app.link.edit_post %><%= posts[i]._id %>" class="btn btn-primary">
                           <%= __('edit') %>
                         </a>
+                        <a href="javascript:void(0);" class="btn btn-danger" id="<%= posts[i]._id %>" onclick="deletePost(this);">
+                          <%= __('delete') %>
+                        </a>
                       </td>
                     </tr>
                     <% } %>
                 </tbody>
               </table>
     </div>
+
+
+    <script>
+      function deletePost(post) {
+        let postId = jQuery(post).attr('id');
+        jQuery.ajax({
+          type: 'DELETE',
+          headers: { 'Authorization': "<%= token %>" },
+          contentType: 'application/json',
+          url: 'http://localhost:5000/api/post/' + postId,
+          success: function (data) {
+            if (data.status == 1) {
+              jQuery('#row-' + postId).remove();
+            }
+          }
+        });
+      }
+    </script>
     <%- include('partials/footer') %>

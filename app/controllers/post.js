@@ -128,6 +128,7 @@ router.get('/myposts', function (req, res) {
       return res.redirect('/');
     }
 
+    _viewData.token = req.session.token;
     _viewData.posts = body.response;
      return res.render('my_post_list', _viewData);
   });

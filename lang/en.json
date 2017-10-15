@@ -13,6 +13,7 @@
 	"account_deleted": "Account deleted successfully.",
 	"invalid_version": "Invalid version",
 	"no_account": "Account does not exist",
+	"post_deleted": "Post deleted",
 	"email_already_exist": "Email %s is already taken",
 	"password_required": "Password is required",
 	"incorrect_credentials": "Email or password is incorrect.",

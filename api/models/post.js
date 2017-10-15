@@ -136,12 +136,13 @@ function update(_id, userId, postParam) {
 }
 
 /** delete post */
-function _delete(_id) {
+function _delete(_id, userId) {
   let deferred = Q.defer();
 
   /** delete record from table */
   db.posts.remove(
-    { _id: mongo.helper.toObjectID(_id) },
+    { _id   : mongo.helper.toObjectID(_id), 
+      userId: mongo.helper.toObjectID(userId),},
     function (err) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 

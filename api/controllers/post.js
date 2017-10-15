@@ -14,9 +14,10 @@ const i18n        = require("i18n");
 /* routes for post api controller */
 router.post(uri.api.route.post_create,          createPost);
 router.get(uri.api.route.post_detail + '/:id',  getUserPostById);
-router.post(uri.api.route.post_edit  + '/:id',  updateUserPostById);
+router.put(uri.api.route.post_edit  + '/:id',  updateUserPostById);
 router.get(uri.api.route.post_user   + '/:id',  getUserPosts);
 router.get(uri.api.route.all_posts,             getAllPosts);
+router.delete('/:id',                           deleteUserPosts);
 
 // Export default for router
 module.exports = router;
@@ -145,6 +146,22 @@ function getAllPosts(req, res) {
     })
     .catch( function(err) {
       // return error
+      res.send({ status: 0, response: err });
+    });
+}
+
+//
+function deleteUserPosts(req, res) {
+  const postId = req.params.id;
+  const userId = req.user._id;
+
+  postService
+    .delete(postId, userId)
+    .then( function() {
+      // deletion successful
+      res.send({ status: 1 });
+    })
+    .catch( function(err) {
       res.send({ status: 0, response: err });
     });
 }
