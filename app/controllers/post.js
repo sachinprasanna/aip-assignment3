@@ -80,7 +80,7 @@ router.post('/edit/:id', function (req, res) {
   const userId    = req.session.user.id;
   let postParam = req.body;
 
-  request.post({
+  request.put({
     url     : config.apiUrl + uri.api.link.edit_post + postId,
     form    : postParam, 
     headers : {'Authorization': req.session.token},
