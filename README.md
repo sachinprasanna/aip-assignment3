@@ -63,6 +63,19 @@ $ nodemon index.js
 
 -------------
 
+# Key Features
+1. User registration
+2. Sign In
+3. Forgot Password / Reset Password
+4. Logout user
+5. Ability to create, view, edit and delete posts
+6. Update user profile and password
+7. Ability to view and search through all posts
+8. Ability to share application on Twitter
+9. Integrated public web service to fetch Tech Business RSS feeds
+
+-------------
+
 # API Docs
 
 ### Register User [POST] (/api/user/register/)
