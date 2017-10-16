@@ -39,7 +39,15 @@ $ npm install
 
 -------------
 
-# Start the App
+# Start the App locally
+
+**Note:** 
+1. Make sure MongoDB is running.
+2. Set up local configuration in /config/config.js:
+    a. Check "connectionString" for database configuration is set to a valid database
+       Preferably - "mongodb://localhost:27017/mydiary"
+    b. Check "apiUrl" is set to "http://localhost:5000/api" (Adjust port number accordingly)
+3. App will run at http://localhost:5000/
 
 ```
 # In terminal
@@ -80,12 +88,12 @@ $ nodemon index.js
         "email":"john@example.com",
     }
 
-### Get user detail [GET] (/api/user/USER ID)
+### Get user detail [GET] (/api/user/[USER ID])
 + Request
     + Headers
       Authorization : USER TOKEN
 
-### Update user detail [PUT] (/api/user/USER ID)
+### Update user detail [PUT] (/api/user/[USER ID])
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -96,7 +104,7 @@ $ nodemon index.js
         "email":"john12@example.com"
     }    
 
-### Delete user account [DELETE] (/api/user/USER ID)
+### Delete user account [DELETE] (/api/user/[USER ID])
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -111,12 +119,12 @@ $ nodemon index.js
       "content": "testing content"
     }
 
-### Get post detail [GET] (/api/post/POST ID)
+### Get post detail [GET] (/api/post/[POST ID])
 + Request
     + Headers
       Authorization : USER TOKEN
  
-### Edit a post [PUT] (/api/post/POST ID)
+### Edit a post [PUT] (/api/post/[POST ID])
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -127,7 +135,7 @@ $ nodemon index.js
       "version": 1
     }
 
-### Delete a post [DELETE] (/api/post/POST ID)
+### Delete a post [DELETE] (/api/post/[POST ID])
 + Request
     + Headers
       Authorization : USER TOKEN
@@ -137,7 +145,7 @@ $ nodemon index.js
     + Headers
       Authorization : USER TOKEN
 
-### Get a user's posts [GET] (/api/post/user/USER ID)
+### Get a user's posts [GET] (/api/post/user/[USER ID])
 + Request
     + Headers
       Authorization : USER TOKEN
