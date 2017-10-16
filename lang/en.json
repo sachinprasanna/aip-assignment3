@@ -60,5 +60,6 @@
 	"post": "Post",
 	"send_new_pwd": "Send New Password",
 	"rss_title": "Tech Business - RSS Feeds from www.wired.com",
-	"rss_menu": "Tech Business RSS"
+	"rss_menu": "Tech Business RSS",
+	"404_message": "404 - Page Not found. <a href='/'>Return to Homepage</a>"
 }

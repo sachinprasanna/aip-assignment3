@@ -40,6 +40,14 @@ app.use('/api', require('./api/router'));
 /** app routes */
 app.use('/', require('./app/router'));
 
+/** 404 error handling of pages */
+app.use(function(req, res, next){
+  res.status(404);
+
+  // display 404 message
+  res.type('html').send( i18n.__('404_message') );
+});
+
 /** start server */
 const server = app.listen(port, function () {
   console.log('Server listening at http://' + server.address().address + ':' + server.address().port);
