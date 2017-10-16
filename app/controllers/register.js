@@ -17,8 +17,7 @@ let _viewData = { uri: uri };
 router.get('/', function (req, res) {
   /** log user out */
   delete req.session.token;
-  delete _viewData.success
-  delete _viewData.error
+  clearSessionData();
 
   res.render('register', _viewData);
 });
@@ -27,8 +26,7 @@ router.get('/', function (req, res) {
  * Send entered email and password to API for authentication
 */
 router.post('/', function (req, res) {
-  delete _viewData.success
-  delete _viewData.error
+  clearSessionData();
   
   /** authenticate using api to maintain clean separation between layers */
   request.post({
@@ -52,4 +50,14 @@ router.post('/', function (req, res) {
   });
 });
 
+/** @method clearSessionData
+ * Function to clear all local session data used to display error or success
+*/
+function clearSessionData(){
+  delete _viewData.success;
+  delete _viewData.error;
+  delete _viewData.lastName;
+  delete _viewData.firstName;
+  delete _viewData.email;
+}
 module.exports = router;

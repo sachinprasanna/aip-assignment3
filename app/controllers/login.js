@@ -18,6 +18,7 @@ router.get('/', function (req, res) {
   delete req.session.user;
   delete _viewData.success
   delete _viewData.error
+  delete _viewData.email
 
   res.render('login', _viewData);
 });
