@@ -6,7 +6,7 @@ MyDiary allows user to add and maintain their posts as well as read other regist
 
 This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*. This project is built in Node.js, Express and EJS template engine.
 
-Development by Chhavi Negi for subject - Advanced Internet Programming, Assignment 3
+Developed by Chhavi Negi for subject - Advanced Internet Programming, Assignment 3
 
 -------------
 
