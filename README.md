@@ -3,7 +3,10 @@
 # About
 
 MyDiary allows user to add and maintain their posts as well as read other registered user's posts. A user needs to be logged in to access the website.
-This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*, made for subject - Advanced Internet Programming, Assignment 3. This project is built in Node.js, Express and EJS template engine.
+
+This repo contains the server-side(api) and client-side(app) code for the web application *MyDiary*. This project is built in Node.js, Express and EJS template engine.
+
+Development by Chhavi Negi for subject - Advanced Internet Programming, Assignment 3
 
 -------------
 
@@ -29,7 +32,7 @@ $ mongod
 
 # Installation
 
-Run the following command to run the code:
+Clone this repo. Open local terminal and run the following command in project folder:
 
 ```
 # install modules
@@ -160,7 +163,7 @@ $ nodemon index.js
 6. Pass number - 0, 1 as a status for API responses. 0 being an error and 1 is success.
 7. API or route names to be stored in separate file to keep record
 8. Use camelcase for function names and uris
-9. Use underscore for filenames and language variables
+9. Use snakecase for filenames and language variables
 10. Do not repeat code
 11. Code should be readable
 12. Explanatory comments at the top of every file and also on every method
