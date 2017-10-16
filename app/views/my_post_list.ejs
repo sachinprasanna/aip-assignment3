@@ -61,7 +61,7 @@
           url: apiUrl + postId,
           success: function (data) {
             if (data.status == 1) {
-              jQuery('#row-' + postId).remove();
+              jQuery('#row-' + postId).fadeOut();
             }
           }
         });
