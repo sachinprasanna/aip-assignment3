@@ -37,7 +37,9 @@ module.exports = {
       "post": "/post/",
       "my_posts": "/myposts/",
       "edit_post": "/post/edit/",
-      "create_post": "/post/create/"
+      "create_post": "/post/create/",
+      "rss": "/rss",
+      "public_rss_url": "https://www.wired.com/feed/category/business/latest/rss"
     }
   }
 }

@@ -58,5 +58,7 @@
 	"change_password": "Change Password",
 	"no_result": "No posts found.",
 	"post": "Post",
-	"send_new_pwd": "Send New Password"
+	"send_new_pwd": "Send New Password",
+	"rss_title": "Tech Business - RSS Feeds from www.wired.com",
+	"rss_menu": "Tech Business RSS"
 }

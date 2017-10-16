@@ -18,5 +18,5 @@ router.use(uri.app.link.forgotpwd,  require('app/controllers/forgot_pwd'));
 router.use(uri.app.link.my_account, require('app/controllers/account'));
 router.use('/',                     require('app/controllers/post'));
 router.use(uri.app.link.post,       require('app/controllers/post'));
-
+router.use(uri.app.link.rss,        require('app/controllers/rss'));
 module.exports = router;

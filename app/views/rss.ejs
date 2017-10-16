@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+  <%- include('partials/menu') %>
+
+    <div class="rsslist form-container">
+      <h1>
+        <%= __('rss_title') %>
+      </h1>
+
+      <div id="rsscontainer"></div>
+
+    </div>
+
+    <script>
+      //calling public web service to fetch rss feeds and display data
+      jQuery.ajax({
+        type: "GET",
+        url: "<%= uri.app.link.public_rss_url %>",
+        dataType: "xml",
+        success: function (xml) {
+          let html = '<ul>';
+          let item = xml.getElementsByTagName("item");
+          for (i = 0; i < item.length; i++) {
+            let itemName = item[i].getElementsByTagName("title")[0].childNodes[0].nodeValue;
+            let itemLink = item[i].getElementsByTagName("link")[0].childNodes[0].nodeValue;
+            html += '<li>' + itemName + ' - ';
+            html += '<a href="' + itemLink + '" target="_blank">' + itemLink + '</a></li>';;
+          }
+
+          html += '</ul>';
+
+          jQuery('#rsscontainer').html(html);
+        }
+      });
+
+    </script>
+    <%- include('partials/footer') %>

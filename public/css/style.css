@@ -60,3 +60,9 @@
   padding: 10px;
   margin-bottom: 30px;
 }
+
+.socialshare{position: absolute;
+  right: 50px;
+  top: 10px;}
+
+.rsslist h1{padding: 0px 30px;}
