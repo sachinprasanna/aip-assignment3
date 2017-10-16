@@ -44,9 +44,9 @@ $ npm install
 **Note:** 
 1. Make sure MongoDB is running.
 2. Set up local configuration in /config/config.js:
-    a. Check "connectionString" for database configuration is set to a valid database
+    + a. Check "connectionString" for database configuration is set to a valid database.
        Preferably - "mongodb://localhost:27017/mydiary"
-    b. Check "apiUrl" is set to "http://localhost:5000/api" (Adjust port number accordingly)
+    + b. Check "apiUrl" is set to "http://localhost:5000/api" (Adjust port number accordingly)
 3. App will run at http://localhost:5000/
 
 ```
