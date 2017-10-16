@@ -47,10 +47,14 @@
 									<input type="password" id="password" class="form-control" name="password" value="" />
 								</div>
 								<div class="form-group">
-									<button class="btn btn-primary">
-										<%= __('change_password') %>
-									</button>
+									<button class="btn btn-primary" onclick="if( (document.getElementById('password').value).length == 0){ alert(passwordError); return false;}"
+									/>
+									<%= __('change_password') %>
+										</button>
 								</div>
 							</form>
 		</div>
+		<script>
+			let passwordError = "<%= __('password_required') %>";
+		</script>
 		<%- include('partials/footer') %>
