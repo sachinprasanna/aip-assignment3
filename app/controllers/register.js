@@ -37,6 +37,7 @@ router.post('/', function (req, res) {
     json: true
   }, function (error, response, body) {
 
+    //render view with error message
     if (body.status == 0) {
       _viewData.error     = body.response;
       _viewData.lastName  = req.body.lastName;
@@ -44,10 +45,8 @@ router.post('/', function (req, res) {
       _viewData.email     = req.body.email;
       return res.render('register', _viewData);
     }
-
-    /** save JWT token in the session to make it available */
-    req.session.token = body.response;
     
+    //render view with success message
     _viewData.success = i18n.__('register_successfully');
     return res.render('register', _viewData);
   });
