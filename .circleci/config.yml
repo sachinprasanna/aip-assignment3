@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - checkout
+      - setup_remote_docker
 
       # Download and cache dependencies
       - restore_cache:
@@ -19,7 +20,17 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      # Use NPM version 4 because there is issue with version 5 with circleci:
+      # https://discuss.circleci.com/t/npm-install-error-that-isnt-reproducing-in-a-local-docker-container/13085/18
+      - run:
+         name: Install latest version 4 of NPM
+         command: npm i -g npm@latest-4
+
       - run: yarn install
+
+      - run:
+         name: Install node modules
+         command: yarn
 
       - save_cache:
           paths:
@@ -27,6 +38,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: yarn test
-
+      - run:
+          name: Run Linter
+          command: yarn lint
 
