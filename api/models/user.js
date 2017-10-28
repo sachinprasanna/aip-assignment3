@@ -9,7 +9,7 @@ User model for
   - Delete user
   - Update user's password
 */
-const config  = require('config/config');
+const config  = require('../../config/config');
 const _       = require('lodash');
 const i18n    = require("i18n");
 const jwt     = require('jsonwebtoken');
@@ -140,15 +140,15 @@ create new user
 @param userParam - user data
 
 */
-function create(userParam) {
+function create(userParam) { console.log('here');
   let deferred = Q.defer();
 
   /** check if email id does not already exists */
   db.users.findOne(
     { email: userParam.email },
-    function (err, user) {
+    function (err, user) { console.log('finding...');
       if (err) deferred.reject(err.name + ': ' + err.message);
-
+console.log('finding...');
       if (user) {
         /** email already exists */
         deferred.reject(i18n.__('email_already_exist', userParam.email));

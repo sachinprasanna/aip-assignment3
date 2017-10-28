@@ -13,11 +13,11 @@ User controller for
 /* imports for express router, database for users and passport */
 const express     = require("express");
 const router      = express.Router();
-const userService = require("api/models/user");
+const userService = require("../models/user");
 const passport    = require("passport");
 const sendmail    = require('sendmail')();
-const config      = require('config/config');
-const uri         = require('config/uri');
+const config      = require('../../config/config');
+const uri         = require('../../config/uri');
 const i18n        = require("i18n");
 
 /* routes for user api controller */
