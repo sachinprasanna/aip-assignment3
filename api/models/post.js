@@ -9,7 +9,7 @@ Post model for
   - Get all user's post
   - Get all posts
 */
-const config    = require('config/config');
+const config    = require('../../config/config');
 const _         = require('lodash');
 const Entities  = require('html-entities').AllHtmlEntities;
 const i18n      = require("i18n");
@@ -67,7 +67,7 @@ function create(post) {
     function (err, doc) {
       if (err) deferred.reject(err.name + ': ' + err.message);
 
-      deferred.resolve();
+      deferred.resolve(doc);
     });
 
   return deferred.promise;

@@ -140,18 +140,18 @@ create new user
 @param userParam - user data
 
 */
-function create(userParam) { console.log('here');
+function create(userParam) {
   let deferred = Q.defer();
 
   /** check if email id does not already exists */
   db.users.findOne(
     { email: userParam.email },
-    function (err, user) { console.log('finding...');
+    function (err, user) {
       if (err) deferred.reject(err.name + ': ' + err.message);
-console.log('finding...');
+
       if (user) {
         /** email already exists */
-        deferred.reject(i18n.__('email_already_exist', userParam.email));
+        deferred.reject('email_already_exist');
       } else {
         /** reset userParam variable to contain required values */
         userParam = {
